@@ -2,7 +2,7 @@
 
 from src import init_server
 
-server = init_server()
+server, db = init_server()
 
 if __name__ == "__main__":
     port = server.config.get("PORT")

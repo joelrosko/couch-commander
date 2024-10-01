@@ -1,6 +1,8 @@
 import os
 from flask import Flask
 from dotenv import load_dotenv
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 from src.config.config import DevConfig, ProdConfig
 
@@ -12,9 +14,11 @@ def init_server():
         server.config.from_object(ProdConfig)
     else:
         server.config.from_object(DevConfig)
+    
+    # sql alchemy instance
+    db = SQLAlchemy(server)
 
-    @server.route("/")
-    def home():
-        return "<h1>TEST HEJ</h1>"
+    # Flask Migrate instance to handle migrations
+    migrate = Migrate(server, db)
 
-    return server
+    return server, db
