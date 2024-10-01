@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
 from src.config.config import DevConfig, ProdConfig
+from src.routes import api
 
 def init_server():
     server = Flask(__name__)
@@ -20,5 +21,7 @@ def init_server():
 
     # Flask Migrate instance to handle migrations
     migrate = Migrate(server, db)
+
+    server.register_blueprint(api, url_prefix="/api/v1")
 
     return server, db
