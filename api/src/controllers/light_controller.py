@@ -17,7 +17,7 @@ async def get_light_state(lamp_id):
 
 # Route to turn on and off lights
 # /api/v1/light/<int:lamp_id>/on
-@light.route('/<int:lamp_id>/on', methods=['POST'])
+@light.route('/<int:lamp_id>/on', methods=['PUT'])
 async def put_light_on_off(lamp_id):
     try:
         try:
@@ -44,7 +44,7 @@ async def put_light_on_off(lamp_id):
 
 # Route to change light name
 # /api/v1/light/<int:lamp_id>/name
-@light.route('/<int:lamp_id>/name', methods=['POST'])
+@light.route('/<int:lamp_id>/name', methods=['PUT'])
 async def put_light_name(lamp_id):
     try:
         try:
