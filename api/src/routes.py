@@ -11,5 +11,5 @@ api.register_blueprint(light, url_prefix="/light")
 # Route for multiple lights
 api.register_blueprint(lights, url_prefix="/lights")
 
-# Route for group of lights
+# Route for groups of lights
 api.register_blueprint(groups, url_prefix="/groups")
