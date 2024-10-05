@@ -1,6 +1,6 @@
 from flask import Response, Blueprint, jsonify, request
 
-from src.services.deconz_service import get_from_deconz, put_to_deconz, post_to_deconz
+from src.services.deconz_service import get_from_deconz, put_to_deconz, post_to_deconz, del_from_deconz
 
 groups = Blueprint("groups", __name__)
 
@@ -118,6 +118,20 @@ async def put_group_lights(group_id):
         payload = {"lights": lights}
 
         response = await put_to_deconz(endpoint, payload)
+
+        return jsonify(response)
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Route to delete group
+# /api/v1/groups/<int:group_id>/remove
+@groups.route("/<int:group_id>/remove", methods = ["DELETE"])
+async def remove_group(group_id):
+    try:
+        endpoint = f'/groups/{group_id}'
+
+        response = await del_from_deconz(endpoint)
 
         return jsonify(response)
         
