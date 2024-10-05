@@ -1,6 +1,8 @@
-from flask import Response, Blueprint, jsonify, request
+from flask import Blueprint, request
+from aiohttp import ClientResponseError
 
 from src.services.deconz_service import get_from_deconz, put_to_deconz, post_to_deconz, del_from_deconz
+from src.utils.response_util import build_response
 
 groups = Blueprint("groups", __name__)
 
@@ -10,10 +12,12 @@ groups = Blueprint("groups", __name__)
 async def get_groups():
     try:
         endpoint = "/groups"
-        data = await get_from_deconz(endpoint=endpoint)
-        return jsonify(data)
+        response = await get_from_deconz(endpoint=endpoint)
+        return build_response(data=response, status=200)
+    except ClientResponseError as e:
+        return build_response(error=f"Failed at: {e.message}", status=e.status)
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return build_response(error="Server error", status=500)
 
 # Route to get specific group
 # /api/v1/groups/<int:group_id>
@@ -21,10 +25,12 @@ async def get_groups():
 async def get_group(group_id):
     try:
         endpoint = f"/groups/{group_id}"
-        data = await get_from_deconz(endpoint=endpoint)
-        return jsonify(data)
+        response = await get_from_deconz(endpoint=endpoint)
+        return build_response(data=response, status=200)
+    except ClientResponseError as e:
+        return build_response(error=f"Failed at: {e.message}", status=e.status)
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return build_response(error="Server error", status=500)
 
 # Route to create group
 # /api/v1/groups/create
@@ -34,25 +40,26 @@ async def create_group():
         try:
             body = request.get_json()
         except Exception:
-            return jsonify({"error": "no body data included"}), 400
+            return build_response(error="no body data included", status=400)
         
         if "name" not in body:
-            return jsonify({"error": "'name' state must be provided"}), 400
+            return build_response(error="'name' state must be provided", status=400)
         
         group_name = body['name']
 
         if len(group_name) <= 0 or len(group_name) > 32:
-            return jsonify({"error": "'name' must be between 1 - 32 chars"}), 400
+            return build_response(error="'name' must be between 1 - 32 chars", status=400)
         
         endpoint = f'/groups'
         payload = {"name": group_name}
 
         response = await post_to_deconz(endpoint, payload)
 
-        return jsonify(response)
-        
+        return build_response(data=response, status=200)
+    except ClientResponseError as e:
+        return build_response(error=f"Failed at: {e.message}", status=e.status)
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return build_response(error="Server error", status=500)
 
 # Route to toggle group state
 # /api/v1/groups/<int:group_id>/on
@@ -62,11 +69,13 @@ async def put_group_on_off(group_id):
         endpoint = f"/groups/{group_id}/action"
         payload = {"toggle": True}
 
-        data = await put_to_deconz(endpoint=endpoint, payload=payload)
+        response = await put_to_deconz(endpoint=endpoint, payload=payload)
 
-        return jsonify(data)
+        return build_response(data=response, status=200)
+    except ClientResponseError as e:
+        return build_response(error=f"Failed at: {e.message}", status=e.status)
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return build_response(error="Server error", status=500)
 
 # Route to update group name
 # /api/v1/groups/<int:group_id>/name
@@ -76,25 +85,26 @@ async def put_group_name(group_id):
         try:
             body = request.get_json()
         except Exception:
-            return jsonify({"error": "no body data included"}), 400
+            return build_response(error="no body data included", status=400)
         
         if "name" not in body:
-            return jsonify({"error": "'name' state must be provided"}), 400
+            return build_response(error="'name' state must be provided", status=400)
         
         group_name = body['name']
 
         if len(group_name) <= 0 or len(group_name) > 32:
-            return jsonify({"error": "'name' must be between 1 - 32 chars"}), 400
+            return build_response(error="'name' must be between 1 - 32 chars", status=400)
         
         endpoint = f'/groups/{group_id}'
         payload = {"name": group_name}
 
         response = await put_to_deconz(endpoint, payload)
 
-        return jsonify(response)
-        
+        return build_response(data=response, status=200)
+    except ClientResponseError as e:
+        return build_response(error=f"Failed at: {e.message}", status=e.status)
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return build_response(error="Server error", status=500)
 
 # Route to add lights to group
 # /api/v1/groups/<int:group_id>/add
@@ -104,25 +114,26 @@ async def put_group_lights(group_id):
         try:
             body = request.get_json()
         except Exception:
-            return jsonify({"error": "no body data included"}), 400
+            return build_response(error="no body data included", status=400)
         
         if "lights" not in body:
-            return jsonify({"error": "array of lights must be included"}), 400
+            return build_response(error="array of lights must be included", status=400)
         
         lights = body['lights']
 
         if not isinstance(lights, list) and not all(isinstance(light, str) for light in lights):
-            return jsonify({"error": "must be list of strings"}), 400
+            return build_response(error="must be list of strings", status=400)
         
         endpoint = f'/groups/{group_id}'
         payload = {"lights": lights}
 
         response = await put_to_deconz(endpoint, payload)
 
-        return jsonify(response)
-        
+        return build_response(data=response, status=200)
+    except ClientResponseError as e:
+        return build_response(error=f"Failed at: {e.message}", status=e.status)
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return build_response(error="Server error", status=500)
 
 # Route to delete group
 # /api/v1/groups/<int:group_id>/remove
@@ -133,7 +144,8 @@ async def remove_group(group_id):
 
         response = await del_from_deconz(endpoint)
 
-        return jsonify(response)
-        
+        return build_response(data=response, status=200)
+    except ClientResponseError as e:
+        return build_response(error=f"Failed at: {e.message}", status=e.status)
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return build_response(error="Server error", status=500)
