@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from aiohttp import ClientResponseError
+from aiohttp import ClientResponseError, ClientError
 
 from src.services.deconz_service import get_from_deconz, put_to_deconz, post_to_deconz, del_from_deconz
 from src.utils.response_util import build_response
@@ -16,6 +16,8 @@ async def get_groups():
         return build_response(data=response, status=200)
     except ClientResponseError as e:
         return build_response(error=f"Failed at: {e.message}", status=e.status)
+    except ClientError as e:
+        return build_response(error=f"Client error: {str(e)}", status=500)
     except Exception as e:
         return build_response(error="Server error", status=500)
 
@@ -29,6 +31,8 @@ async def get_group(group_id):
         return build_response(data=response, status=200)
     except ClientResponseError as e:
         return build_response(error=f"Failed at: {e.message}", status=e.status)
+    except ClientError as e:
+        return build_response(error=f"Client error: {str(e)}", status=500)
     except Exception as e:
         return build_response(error="Server error", status=500)
 
@@ -58,6 +62,8 @@ async def create_group():
         return build_response(data=response, status=200)
     except ClientResponseError as e:
         return build_response(error=f"Failed at: {e.message}", status=e.status)
+    except ClientError as e:
+        return build_response(error=f"Client error: {str(e)}", status=500)
     except Exception as e:
         return build_response(error="Server error", status=500)
 
@@ -74,6 +80,8 @@ async def put_group_on_off(group_id):
         return build_response(data=response, status=200)
     except ClientResponseError as e:
         return build_response(error=f"Failed at: {e.message}", status=e.status)
+    except ClientError as e:
+        return build_response(error=f"Client error: {str(e)}", status=500)
     except Exception as e:
         return build_response(error="Server error", status=500)
 
@@ -103,6 +111,8 @@ async def put_group_name(group_id):
         return build_response(data=response, status=200)
     except ClientResponseError as e:
         return build_response(error=f"Failed at: {e.message}", status=e.status)
+    except ClientError as e:
+        return build_response(error=f"Client error: {str(e)}", status=500)
     except Exception as e:
         return build_response(error="Server error", status=500)
 
@@ -132,6 +142,8 @@ async def put_group_lights(group_id):
         return build_response(data=response, status=200)
     except ClientResponseError as e:
         return build_response(error=f"Failed at: {e.message}", status=e.status)
+    except ClientError as e:
+        return build_response(error=f"Client error: {str(e)}", status=500)
     except Exception as e:
         return build_response(error="Server error", status=500)
 
@@ -147,5 +159,7 @@ async def remove_group(group_id):
         return build_response(data=response, status=200)
     except ClientResponseError as e:
         return build_response(error=f"Failed at: {e.message}", status=e.status)
+    except ClientError as e:
+        return build_response(error=f"Client error: {str(e)}", status=500)
     except Exception as e:
         return build_response(error="Server error", status=500)
