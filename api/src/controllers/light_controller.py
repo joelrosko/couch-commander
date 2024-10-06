@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from aiohttp import ClientResponseError
+from aiohttp import ClientResponseError, ClientError
 
 from src.services.deconz_service import get_from_deconz, put_to_deconz, del_from_deconz
 from src.utils.response_util import build_response
@@ -16,6 +16,8 @@ async def get_light_state(lamp_id):
         return build_response(data=response, status=200)
     except ClientResponseError as e:
         return build_response(error=f"Failed at: {e.message}", status=e.status)
+    except ClientError as e:
+        return build_response(error=f"Client error: {str(e)}", status=500)
     except Exception as e:
         return build_response(error="Server error", status=500)
 
@@ -45,6 +47,8 @@ async def put_light_on_off(lamp_id):
         return build_response(data=response, status=200)
     except ClientResponseError as e:
         return build_response(error=f"Failed at: {e.message}", status=e.status)
+    except ClientError as e:
+        return build_response(error=f"Client error: {str(e)}", status=500)
     except Exception as e:
         return build_response(error="Server error", status=500)
 
@@ -74,6 +78,8 @@ async def put_light_name(lamp_id):
         return build_response(data=response, status=200)
     except ClientResponseError as e:
         return build_response(error=f"Failed at: {e.message}", status=e.status)
+    except ClientError as e:
+        return build_response(error=f"Client error: {str(e)}", status=500)
     except Exception as e:
         return build_response(error="Server error", status=500)
 
@@ -90,6 +96,8 @@ async def remove_light(lamp_id):
         return build_response(data=response, status=200)
     except ClientResponseError as e:
         return build_response(error=f"Failed at: {e.message}", status=e.status)
+    except ClientError as e:
+        return build_response(error=f"Client error: {str(e)}", status=500)
     except Exception as e:
         return build_response(error="Server error", status=500)
     
@@ -122,6 +130,8 @@ async def put_light_bri(lamp_id):
         return build_response(data=response, status=200)
     except ClientResponseError as e:
         return build_response(error=f"Failed at: {e.message}", status=e.status)
+    except ClientError as e:
+        return build_response(error=f"Client error: {str(e)}", status=500)
     except Exception as e:
         return build_response(error="Server error", status=500)
 
@@ -133,7 +143,7 @@ async def put_light_color(lamp_id):
         try:
             body = request.get_json()
         except Exception:
-            return jsonify({"error": "no body data included"}), 400
+            return build_response(error="no body data included", status=400)
 
         if "xy" not in body:
             return build_response(error="'xy' values must be provided", status=400)
@@ -157,5 +167,7 @@ async def put_light_color(lamp_id):
         return build_response(data=response, status=200)
     except ClientResponseError as e:
         return build_response(error=f"Failed at: {e.message}", status=e.status)
+    except ClientError as e:
+        return build_response(error=f"Client error: {str(e)}", status=500)
     except Exception as e:
         return build_response(error="Server error", status=500)

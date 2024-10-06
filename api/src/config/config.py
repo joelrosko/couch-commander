@@ -9,6 +9,7 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = os.getenv("DB_TRACK_MODIFICATIONS", False)
     DECONZ_API_URL = os.getenv("DECONZ_API_URL")
     DECONZ_API_KEY = os.getenv("DECONZ_API_KEY")
+    TIME_OUT = int(os.getenv("TIME_OUT"))
 
 class DevConfig(Config):
     ENV = "development"
