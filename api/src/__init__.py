@@ -5,9 +5,6 @@ from flask_migrate import Migrate
 
 from src.config.config import DevConfig, ProdConfig
 
-from src.utils.error_util import register_error_handlers
-from src.middlewares.auth import verify_token
-
 db = SQLAlchemy()
 migrate = Migrate()
 
@@ -23,6 +20,7 @@ def init_server():
     db.init_app(server)
     migrate.init_app(server, db)
 
+    from src.middlewares.auth import verify_token
     @server.before_request
     def check_token():
         # Call the token verification function before every request
@@ -31,6 +29,7 @@ def init_server():
     from src.routes import api
     server.register_blueprint(api, url_prefix="/api/v1")
 
+    from src.utils.error_util import register_error_handlers
     register_error_handlers(server)
 
     return server
