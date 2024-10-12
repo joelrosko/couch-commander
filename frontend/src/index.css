@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,900;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,500;1,500&display=swap');
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 
@@ -7,4 +10,20 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0px;
+}
+
+/* Specific font for h1 and h2 */
+h1, h2 {
+  font-family: 'Albert Sans', sans-serif;
+  font-weight: 900; /* Apply the bold 900 weight for h1 and h2 */
+}
+
+/* Default font for all other text */
+body, p, span, div, h3, h4, h5, h6, a, li {
+  font-family: 'Albert Sans', sans-serif;
+  font-weight: 500; /* Apply the 500 weight for all other elements */
 }
