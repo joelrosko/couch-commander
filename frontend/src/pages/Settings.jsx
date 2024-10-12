@@ -1,6 +1,10 @@
+import HeaderBar from "../HeaderBar/HeaderBar"
+
 const Settings = () => {
   return (
-    <div>Settings</div>
+    <>
+      <HeaderBar name={'COUCH-COMMANDER'} section={'SETTINGS'} />
+    </>
   )
 }
 

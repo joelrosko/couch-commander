@@ -2,7 +2,6 @@ import { Outlet } from 'react-router-dom';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
 import NavigationBar from './NavigationBar/NavigationBar';
-import Typography from '@mui/material/Typography';
 
 function App() {
 
@@ -27,12 +26,16 @@ function App() {
     },
     typography: {
       h1: {
+        color: '#ffffff',
         fontFamily: 'Albert Sans', // Use the bold font for h1
         fontWeight: 900,
+        fontSize: '36px'
       },
       h2: {
+        color: '#ffffff',
         fontFamily: 'Albert Sans', // Use the bold font for h2
         fontWeight: 900,
+        fontSize: '16px'
       },
       body1: {
         fontFamily: 'Albert Sans', // Use the regular weight for body text
@@ -64,7 +67,6 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Typography variant='h1'>Hej</Typography>
       <Outlet />
       <NavigationBar />
     </ThemeProvider>

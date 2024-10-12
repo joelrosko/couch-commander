@@ -1,6 +1,10 @@
+import HeaderBar from "../HeaderBar/HeaderBar"
+
 const Groups = () => {
   return (
-    <div>Groups</div>
+    <>
+      <HeaderBar name={'VASAPLATSEN'} section={'GROUPS'} />
+    </>
   )
 }
 
