@@ -1,8 +1,8 @@
-import './App.css';
 import { Outlet } from 'react-router-dom';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
-import Button from '@mui/material/Button';
+import NavigationBar from './NavigationBar/NavigationBar';
+import Typography from '@mui/material/Typography';
 
 function App() {
 
@@ -23,14 +23,50 @@ function App() {
         primary: '#FFFFFF',
         secondary: '#D36135',
       },
+      divider: '#d36135',
+    },
+    typography: {
+      h1: {
+        fontFamily: 'Albert Sans', // Use the bold font for h1
+        fontWeight: 900,
+      },
+      h2: {
+        fontFamily: 'Albert Sans', // Use the bold font for h2
+        fontWeight: 900,
+      },
+      body1: {
+        fontFamily: 'Albert Sans', // Use the regular weight for body text
+        fontWeight: 500,
+      },
+      body2: {
+        fontFamily: 'Albert Sans', // Use the regular weight for smaller body text
+        fontWeight: 500,
+      },
+      // Apply custom font styles to other elements as needed
+    },
+    components: {
+      MuiBottomNavigationAction: {
+        styleOverrides: {
+          root: {
+            '&.Mui-selected': {
+              color: '#d36135'
+            }
+          },
+          label: {
+            fontFamily: 'Albert Sans',
+            fontWeight: 500, // Apply the regular font to BottomNavigation labels
+            fontSize: '12px', // Adjust font size if necessary
+          },
+        },
+      },
     },
   });
 
   return (
     <ThemeProvider theme={theme}>
-      <h1>Hej test</h1>
-      <Button variant='contained'>Primary</Button>
+      <Typography variant='h1'>Hej</Typography>
       <Outlet />
+      <NavigationBar />
     </ThemeProvider>
   )
 }
