@@ -1,6 +1,10 @@
+import HeaderBar from "../HeaderBar/HeaderBar"
+
 const Lights = () => {
   return (
-    <div>Lights</div>
+    <>
+      <HeaderBar name={'VASAPLATSEN'} section={'LIGHTS'} />
+    </>
   )
 }
 
