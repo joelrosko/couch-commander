@@ -80,6 +80,14 @@ function App() {
           },
         },
       },
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            fontFamily: 'Albert Sans',
+            fontWeight: 900
+          },
+        },
+      },
     },
   });
 
