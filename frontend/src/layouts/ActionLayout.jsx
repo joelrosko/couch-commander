@@ -16,7 +16,7 @@ const ActionLayout = () => {
     <Box sx={{
         display: 'flex',
         flexDirection: 'column',
-        m: '20px',
+        mt: '20px',
         alignItems: 'center',
     }}>
         <Box sx={{

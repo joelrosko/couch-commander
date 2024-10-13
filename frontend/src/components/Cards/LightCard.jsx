@@ -20,8 +20,8 @@ const LightCard = ({ name, manufacturer, status }) => {
     <Card
       onClick={onClick}
       sx={{
-        borderRadius: 4,
-        padding: '12px',
+        flexGrow: 1,
+        padding: '6px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'left',
@@ -29,7 +29,8 @@ const LightCard = ({ name, manufacturer, status }) => {
         ":hover": {
           cursor: 'pointer'
         },
-        maxWidth: '250px'
+        maxWidth: '250px',
+        borderRadius: '4px'
       }}
     >
       <Typography variant="h3" sx={{ marginBottom: '4px' }}>
