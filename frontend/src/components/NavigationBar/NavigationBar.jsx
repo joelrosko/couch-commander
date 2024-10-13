@@ -1,8 +1,8 @@
 import { BottomNavigation, BottomNavigationAction, Box, Divider } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
-import LightIcon from '../assets/bulb_icon_orange.svg?react';
-import GroupIcon from './../assets/rooms_icob.svg?react';
-import SettingsIcon from './../assets/settings_icon.svg?react';
+import LightIcon from '../../assets/bulb_icon_orange.svg?react';
+import GroupIcon from '../../assets/rooms_icob.svg?react';
+import SettingsIcon from '../../assets/settings_icon.svg?react';
 
 const NavigationBar = () => {
 

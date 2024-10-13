@@ -1,4 +1,4 @@
-import HeaderBar from "../HeaderBar/HeaderBar"
+import HeaderBar from "../components/HeaderBar/HeaderBar"
 
 const Groups = () => {
   return (

@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
-import NavigationBar from './NavigationBar/NavigationBar';
+import NavigationBar from './components/NavigationBar/NavigationBar';
 
 function App() {
 
