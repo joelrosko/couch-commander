@@ -1,15 +1,27 @@
 import HeaderBar from "../components/HeaderBar/HeaderBar"
-import ColorSlider from "../components/Sliders/ColorSlider"
-import BrightnessSlider from "../components/Sliders/BrightnessSlider"
 import LightCard from "../components/Cards/LightCard"
 import ActionLayout from "../layouts/ActionLayout"
+import CardsLayout from "../layouts/CardsLayout"
+import HeaderLayout from "../layouts/HeaderLayout"
 
 const Lights = () => {
   return (
     <>
-      <HeaderBar name={'VASAPLATSEN'} section={'LIGHTS'} />
-      <ActionLayout />
-      <LightCard name={'Desktop'} manufacturer={'Ikea'} status={true} />
+      <HeaderLayout>
+        <HeaderBar name={'VASAPLATSEN'} section={'LIGHTS'} />
+        <ActionLayout />
+      </HeaderLayout>
+      <CardsLayout>
+        <LightCard name={'Desktop'} manufacturer={'Ikea'} status={true} />
+        <LightCard name={'Roof'} manufacturer={'Ikea'} status={false} />
+        <LightCard name={'Roof'} manufacturer={'Ikea'} status={false} />
+        <LightCard name={'Roof'} manufacturer={'Ikea'} status={false} />
+        <LightCard name={'Roof'} manufacturer={'Ikea'} status={false} />
+        <LightCard name={'Roof'} manufacturer={'Ikea'} status={false} />
+        <LightCard name={'Roof'} manufacturer={'Ikea'} status={false} />
+        <LightCard name={'Roof'} manufacturer={'Ikea'} status={false} />
+        <LightCard name={'Roof'} manufacturer={'Ikea'} status={false} />
+      </CardsLayout>
     </>
   )
 }
