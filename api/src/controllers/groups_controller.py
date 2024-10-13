@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 from aiohttp import ClientResponseError, ClientError
 
+from src.middlewares.auth import token_required
 from src.services.deconz_service import get_from_deconz, put_to_deconz, post_to_deconz, del_from_deconz
 from src.utils.response_util import build_response
 from src.utils.logging_util import log_errors_to_db
@@ -10,6 +11,7 @@ groups = Blueprint("groups", __name__)
 # Route to get all groups
 # /api/v1/groups/list
 @groups.route("/list", methods = ["GET"])
+@token_required
 async def get_groups():
     try:
         endpoint = "/groups"
@@ -43,6 +45,7 @@ async def get_groups():
 # Route to get specific group
 # /api/v1/groups/<int:group_id>
 @groups.route("/<int:group_id>", methods = ["GET"])
+@token_required
 async def get_group(group_id):
     try:
         endpoint = f"/groups/{group_id}"
@@ -76,6 +79,7 @@ async def get_group(group_id):
 # Route to create group
 # /api/v1/groups/create
 @groups.route("/create", methods = ["POST"])
+@token_required
 async def create_group():
     try:
         try:
@@ -86,9 +90,9 @@ async def create_group():
                 error_message="No body data included",
                 status_code=400
             )
-            
+
             return build_response(error="no body data included", status=400)
-        
+
         if "name" not in body:
             log_errors_to_db(
                 endpoint=request.path,
@@ -97,7 +101,7 @@ async def create_group():
             )
 
             return build_response(error="'name' state must be provided", status=400)
-        
+
         group_name = body['name']
 
         if len(group_name) <= 0 or len(group_name) > 32:
@@ -108,7 +112,7 @@ async def create_group():
             )
 
             return build_response(error="'name' must be between 1 - 32 chars", status=400)
-        
+
         endpoint = f'/groups'
         payload = {"name": group_name}
 
@@ -143,6 +147,7 @@ async def create_group():
 # Route to toggle group state
 # /api/v1/groups/<int:group_id>/on
 @groups.route("/<int:group_id>/on", methods = ["PUT"])
+@token_required
 async def put_group_on_off(group_id):
     try:
         endpoint = f"/groups/{group_id}/action"
@@ -179,6 +184,7 @@ async def put_group_on_off(group_id):
 # Route to update group name
 # /api/v1/groups/<int:group_id>/name
 @groups.route("/<int:group_id>/name", methods = ["PUT"])
+@token_required
 async def put_group_name(group_id):
     try:
         try:
@@ -191,7 +197,7 @@ async def put_group_name(group_id):
             )
 
             return build_response(error="no body data included", status=400)
-        
+
         if "name" not in body:
             log_errors_to_db(
                 endpoint=request.path,
@@ -200,7 +206,7 @@ async def put_group_name(group_id):
             )
 
             return build_response(error="'name' state must be provided", status=400)
-        
+
         group_name = body['name']
 
         if len(group_name) <= 0 or len(group_name) > 32:
@@ -211,7 +217,7 @@ async def put_group_name(group_id):
             )
 
             return build_response(error="'name' must be between 1 - 32 chars", status=400)
-        
+
         endpoint = f'/groups/{group_id}'
         payload = {"name": group_name}
 
@@ -246,6 +252,7 @@ async def put_group_name(group_id):
 # Route to add lights to group
 # /api/v1/groups/<int:group_id>/add
 @groups.route("/<int:group_id>/add", methods = ["PUT"])
+@token_required
 async def put_group_lights(group_id):
     try:
         try:
@@ -258,7 +265,7 @@ async def put_group_lights(group_id):
             )
 
             return build_response(error="no body data included", status=400)
-        
+
         if "lights" not in body:
             log_errors_to_db(
                 endpoint=request.path,
@@ -267,7 +274,7 @@ async def put_group_lights(group_id):
             )
 
             return build_response(error="array of lights must be included", status=400)
-        
+
         lights = body['lights']
 
         if not isinstance(lights, list) and not all(isinstance(light, str) for light in lights):
@@ -278,7 +285,7 @@ async def put_group_lights(group_id):
             )
 
             return build_response(error="must be list of strings", status=400)
-        
+
         endpoint = f'/groups/{group_id}'
         payload = {"lights": lights}
 
@@ -313,6 +320,7 @@ async def put_group_lights(group_id):
 # Route to delete group
 # /api/v1/groups/<int:group_id>/remove
 @groups.route("/<int:group_id>/remove", methods = ["DELETE"])
+@token_required
 async def remove_group(group_id):
     try:
         endpoint = f'/groups/{group_id}'
