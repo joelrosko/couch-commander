@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
-import NavigationBar from './NavigationBar/NavigationBar';
+import NavigationBar from './components/NavigationBar/NavigationBar';
 
 function App() {
 
@@ -37,9 +37,17 @@ function App() {
         fontWeight: 900,
         fontSize: '16px'
       },
+      h3: {
+        color: '#d36135',
+        fontFamily: 'Albert Sans', // Use the bold font for h2
+        fontWeight: 900,
+        fontSize: '16px'
+      },
       body1: {
         fontFamily: 'Albert Sans', // Use the regular weight for body text
         fontWeight: 500,
+        fontSize: '16px',
+        color: '#d36135'
       },
       body2: {
         fontFamily: 'Albert Sans', // Use the regular weight for smaller body text
@@ -59,6 +67,16 @@ function App() {
             fontFamily: 'Albert Sans',
             fontWeight: 500, // Apply the regular font to BottomNavigation labels
             fontSize: '12px', // Adjust font size if necessary
+          },
+        },
+      },
+      MuiCardContent: {
+        styleOverrides: {
+          root: {
+            padding: '0px',
+            '&:last-child': { // Also ensure last child padding is reset
+            padding: 0,
+          },
           },
         },
       },
