@@ -12,8 +12,8 @@ const AddCard = () => {
     <Card
       onClick={onClick}
       sx={{
-        flexGrow: 1,
-        padding: '6px',
+        padding: '10px',
+        paddingBottom: '6px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -22,10 +22,10 @@ const AddCard = () => {
         ":hover": {
           cursor: 'pointer'
         },
-        maxWidth: '250px',
-        borderRadius: '4px'
+        width: '142px',
+        borderRadius: '7px'
       }}>
-        <AddIcon style={{ color: '#d36135', width: 60, height: 60 }} />
+        <AddIcon style={{ color: 'grey', width: 60, height: 60 }} />
     </Card>
   )
 }

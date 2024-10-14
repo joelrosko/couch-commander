@@ -49,7 +49,8 @@ export const apiPut = async (urlExtension, data) => {
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
-      return await response.json();
+      data = await response.json();
+      return data
     } catch (error) {
       console.error('PUT request failed:', error);
       throw error;

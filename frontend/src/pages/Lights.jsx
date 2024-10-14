@@ -9,13 +9,17 @@ import { apiGet } from "../services/apiService"
 
 const Lights = () => {
   const [lights, setLights] = useState([]);
+  const [selected, setSelected] = useState("");
+  const [selectedLightName, setSelectedLightName] = useState("LIGHTS");
+  const [selectedLightState, setSelectedLightState] = useState(null);
 
   useEffect(() => {
     const fetchLights = async () => {
       try {
         const data = await apiGet('/lights/list'); // Fetch lights from "/lights/list"
-        setLights(data);
-        console.log(data)
+        const lightsArray = Object.entries(data.data);
+        setLights(lightsArray);
+        console.log(lightsArray)
       } catch (error) {
         console.error('Failed to fetch lights:', error);
       }
@@ -24,24 +28,36 @@ const Lights = () => {
     fetchLights();
   }, []);
 
-
+  const onCardClicked = (lightId, name, status) => {
+    if (selected == lightId) {
+      setSelected("");
+      setSelectedLightName("LIGHTS");
+      setSelectedLightState(null);
+    } else {
+      setSelected(lightId);
+      setSelectedLightName(name.toUpperCase());
+      setSelectedLightState(status);
+    }
+  };
 
   return (
     <>
       <HeaderLayout>
-        <HeaderBar name={'VASAPLATSEN'} section={'LIGHTS'} />
-        <ActionLayout />
+        <HeaderBar name={'VASAPLATSEN'} section={selectedLightName} />
+        {selected && <ActionLayout lightId={selected} status={selectedLightState} />}
       </HeaderLayout>
       <CardsLayout>
-        <LightCard name={'Desktop'} manufacturer={'Ikea'} status={true} />
-        <LightCard name={'Roof'} manufacturer={'Ikea'} status={false} />
-        <LightCard name={'Roof'} manufacturer={'Ikea'} status={false} />
-        <LightCard name={'Roof'} manufacturer={'Ikea'} status={false} />
-        <LightCard name={'Roof'} manufacturer={'Ikea'} status={false} />
-        <LightCard name={'Roof'} manufacturer={'Ikea'} status={false} />
-        <LightCard name={'Roof'} manufacturer={'Ikea'} status={false} />
-        <LightCard name={'Roof'} manufacturer={'Ikea'} status={false} />
-        <LightCard name={'Roof'} manufacturer={'Ikea'} status={false} />
+        {lights.map(([lightId, lightsData]) =>
+          <LightCard
+            key={lightId}
+            name={lightsData.name}
+            manufacturer={lightsData.manufacturername.split(" ")[0]}
+            status={lightsData.state.on}
+            onClick={() => onCardClicked(lightId, lightsData.name, lightsData.state.on)}
+            opacity={selected && selected !== lightId ? 0.7 : 1}
+          />
+        )}
+
         <AddCard />
       </CardsLayout>
     </>
