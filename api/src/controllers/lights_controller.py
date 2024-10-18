@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 from aiohttp import ClientResponseError, ClientError
 
+from src.middlewares.auth import token_required
 from src.services.deconz_service import get_from_deconz, put_to_deconz
 from src.utils.response_util import build_response
 from src.utils.logging_util import log_errors_to_db
@@ -10,6 +11,7 @@ lights = Blueprint("lights", __name__)
 # Route to get added lights
 # /api/v1/lights/list
 @lights.route("/list", methods = ["GET"])
+@token_required
 async def get_lights():
     try:
         endpoint = "/lights"
@@ -43,6 +45,7 @@ async def get_lights():
 # Route to add new lights
 # /api/v1/lights/add
 @lights.route("/add", methods = ["PUT"])
+@token_required
 async def add_lights():
     try:
         endpoint = "/config"

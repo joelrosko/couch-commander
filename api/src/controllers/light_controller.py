@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 from aiohttp import ClientResponseError, ClientError
 
+from src.middlewares.auth import token_required
 from src.services.deconz_service import get_from_deconz, put_to_deconz, del_from_deconz
 from src.utils.response_util import build_response
 from src.utils.logging_util import log_errors_to_db
@@ -10,6 +11,7 @@ light = Blueprint("light", __name__)
 # Route to get added lights
 # /api/v1/light/<int:lamp_id>
 @light.route("/<int:lamp_id>", methods = ["GET"])
+@token_required
 async def get_light_state(lamp_id):
     try:
         endpoint = f"/lights/{lamp_id}"
@@ -43,6 +45,7 @@ async def get_light_state(lamp_id):
 # Route to turn on and off lights
 # /api/v1/light/<int:lamp_id>/on
 @light.route('/<int:lamp_id>/on', methods=['PUT'])
+@token_required
 async def put_light_on_off(lamp_id):
     try:
         try:
@@ -110,6 +113,7 @@ async def put_light_on_off(lamp_id):
 # Route to change light name
 # /api/v1/light/<int:lamp_id>/name
 @light.route('/<int:lamp_id>/name', methods=['PUT'])
+@token_required
 async def put_light_name(lamp_id):
     try:
         try:
@@ -177,6 +181,7 @@ async def put_light_name(lamp_id):
 # Route to delete light
 # /api/v1/light/<int:lamp_id>/remove
 @light.route('/<int:lamp_id>/remove', methods=['DELETE'])
+@token_required
 async def remove_light(lamp_id):
     try:
         endpoint = f'/lights/{lamp_id}'
@@ -209,10 +214,11 @@ async def remove_light(lamp_id):
         )
 
         return build_response(error="Server error", status=500)
-    
+
 # Route to set bri of light
 # /api/v1/light/<int:lamp_id>/bri
 @light.route('/<int:lamp_id>/bri', methods=['PUT'])
+@token_required
 async def put_light_bri(lamp_id):
     try:
         try:
@@ -267,7 +273,7 @@ async def put_light_bri(lamp_id):
             error_message=str(e),
             status_code=e.status
         )
-        
+
         return build_response(error=f"Failed at: {e.message}", status=e.status)
     except ClientError as e:
         log_errors_to_db(
@@ -289,6 +295,7 @@ async def put_light_bri(lamp_id):
 # Route to set color of light
 # /api/v1/light/<int:lamp_id>/color
 @light.route('/<int:lamp_id>/color', methods=['PUT'])
+@token_required
 async def put_light_color(lamp_id):
     try:
         try:

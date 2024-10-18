@@ -4,17 +4,16 @@ const CardsLayout = ({  children }) => {
   return (
     <Box sx={{
         m: '20px',
+        maxWidth: '1200px',
         display: 'flex',
         justifyContent: 'center',
-        marginBottom: '66px'
+        marginBottom: '60px'
     }}>
         <Box sx={{
-            width: '100%',
-            maxWidth: '1200px',
+          paddingBottom: '6px',
             display: 'flex',
             flexDirection: 'row',
             flexWrap: 'wrap',
-            justifyContent: 'flex-start',
             gap: '10px',
             boxSizing: 'border-box',
             overflowY: 'auto'

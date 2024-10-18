@@ -1,11 +1,26 @@
-import { Button, Typography, Box } from '@mui/material';
+import { Button, Box } from '@mui/material';
 import ColorSlider from '../components/Sliders/ColorSlider';
 import BrightnessSlider from '../components/Sliders/BrightnessSlider';
+import { apiPut } from '../services/apiService';
+import { useLights } from '../contexts/LightsContext';
 
 const ActionLayout = () => {
+    const { lights, selectedLight, updateLights } = useLights();
 
-    const onOffClick = () => {
-        console.log("On / Off click")
+    const onOffClick = async () => {
+        try {
+            const updatedLights = { ...lights };
+            updatedLights[selectedLight].state.on = !updatedLights[selectedLight].state.on;
+
+            const body = {
+                "on": updatedLights[selectedLight].state.on
+            };
+            await apiPut(`/light/${selectedLight}/on`, body); // Update light state at "/light/<id>/on"
+
+            updateLights(updatedLights);
+          } catch (error) {
+            console.error('Failed to fetch lights:', error);
+          }
     }
 
     const classicModeClick = () => {
@@ -26,8 +41,8 @@ const ActionLayout = () => {
             maxWidth: '350px',
             mb: 1
         }}>
-            <Button onClick={onOffClick} variant='contained' sx={{width: '50%', mr: 1}}>On / Off</Button>
-            <Button onClick={classicModeClick} variant='contained' sx={{width: '50%', ml: 1}}>Classic mode</Button>
+            <Button onClick={onOffClick} variant='contained' sx={{ width: '50%', mr: 1, borderRadius: '7px' }}>On / Off</Button>
+            <Button onClick={classicModeClick} variant='contained' sx={{ width: '50%', ml: 1, borderRadius: '7px' }}>Classic mode</Button>
         </Box>
         <Box sx={{ width: '100%', maxWidth: '350px' }}>
             <BrightnessSlider />

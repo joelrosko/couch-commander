@@ -1,27 +1,21 @@
 import { Card, CardContent, Typography, Box } from '@mui/material';
 import LightIcon from '../../assets/bulb_icon_orange.svg?react';
 
-const LightCard = ({ name, manufacturer, status }) => {
+const LightCard = ({ name, manufacturer, status, onClick, opacity }) => {
 
   const getStatusColor = (status) => {
     if (status) {
-      return 'green';
+      return '#d36135';
     } else {
       return 'grey';
     }
   };
 
-  const onClick = (e) => {
-    console.log(e)
-    console.log("Light card clicked")
-  }
-
   return (
     <Card
       onClick={onClick}
       sx={{
-        flexGrow: 1,
-        padding: '6px',
+        padding: '10px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'left',
@@ -29,11 +23,14 @@ const LightCard = ({ name, manufacturer, status }) => {
         ":hover": {
           cursor: 'pointer'
         },
-        maxWidth: '250px',
-        borderRadius: '4px'
+        width: '142px',
+        borderRadius: '7px',
+        paddingBottom: '6px',
+        opacity: opacity,
+        transition: 'opacity 0.3s ease'
       }}
     >
-      <Typography variant="h3" sx={{ marginBottom: '4px' }}>
+      <Typography variant="h3">
           {name.toUpperCase()}
         </Typography>
       <CardContent
@@ -55,16 +52,15 @@ const LightCard = ({ name, manufacturer, status }) => {
           paddingLeft: 2
         }}
         >
-          <Typography variant="body1" sx={{mb: '1px'}}>
+          <Typography variant="body1" sx={{mb: '0px'}}>
           {manufacturer.toUpperCase()}
         </Typography>
         <Box
         sx={{
-          width: 15,
-          height: 15,
+          width: 12,
+          height: 12,
           borderRadius: '50%',
-          backgroundColor: getStatusColor(status),
-          marginTop: '1px'
+          backgroundColor: getStatusColor(status)
         }}
       />
         </Box>
