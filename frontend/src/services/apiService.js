@@ -15,7 +15,8 @@ export const apiGet = async (urlExtension) => {
         if (!response.ok) {
             throw new Error(`Error: ${response.status}`);
         }
-        return await response.json();
+        const data = await response.json();
+        return data.data;
     } catch (error) {
         console.error('GET request failed:', error);
         throw error;

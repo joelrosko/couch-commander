@@ -2,17 +2,22 @@ import { Button, Box } from '@mui/material';
 import ColorSlider from '../components/Sliders/ColorSlider';
 import BrightnessSlider from '../components/Sliders/BrightnessSlider';
 import { apiPut } from '../services/apiService';
+import { useLights } from '../contexts/LightsContext';
 
-const ActionLayout = ({ lightId, status }) => {
+const ActionLayout = () => {
+    const { lights, selectedLight, updateLights } = useLights();
 
     const onOffClick = async () => {
-        console.log("On / Off click")
         try {
+            const updatedLights = { ...lights };
+            updatedLights[selectedLight].state.on = !updatedLights[selectedLight].state.on;
+
             const body = {
-                "on": !status   // Continue from here
-            }
-            const data = await apiPut(`/light/${lightId}/on`, body); // Fetch lights from "/lights/list"
-            console.log(data)
+                "on": updatedLights[selectedLight].state.on
+            };
+            await apiPut(`/light/${selectedLight}/on`, body); // Update light state at "/light/<id>/on"
+
+            updateLights(updatedLights);
           } catch (error) {
             console.error('Failed to fetch lights:', error);
           }
