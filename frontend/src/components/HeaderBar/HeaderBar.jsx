@@ -1,4 +1,4 @@
-import { Typography, Box, Divider } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 
 const HeaderBar = ({ name, section}) => {
   return (

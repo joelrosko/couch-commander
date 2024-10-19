@@ -1,9 +1,11 @@
 import { Box, Slider } from '@mui/material';
 import { useLights } from '../../contexts/LightsContext';
 import { apiPut } from '../../services/apiService';
+import { useAlerts } from '../../contexts/AlertsContext';
 
 const BrightnessSlider = () => {
     const { lights, selectedLight, updateLights } = useLights();
+    const { toggleErrorAlert } = useAlerts();
 
     const handleSliderChange = async (e, newValue) => {
         try {

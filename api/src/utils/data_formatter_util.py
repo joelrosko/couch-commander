@@ -16,3 +16,16 @@ def format_lights_data(lights:dict):
         updated_response[light_id] = included_ligt_data
 
     return updated_response
+
+def format_groups_data(groups:dict):
+    updated_response = {}
+    for group_id, group_data in groups.items():
+        included_group_data = {
+            "name": group_data['name'],
+            "allOn": group_data["state"]['all_on'],
+            "nDevices": len(group_data['lights'])
+        }
+
+        updated_response[group_id] = included_group_data
+
+    return updated_response
