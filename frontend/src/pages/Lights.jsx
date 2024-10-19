@@ -8,9 +8,12 @@ import AddCard from "../components/Cards/AddCard"
 import { apiGet } from "../services/apiService"
 import { LightsProvider } from '../contexts/LightsContext';
 import { useLights } from '../contexts/LightsContext';
+import { useAlerts } from '../contexts/AlertsContext';
+import ErrorAlert from '../components/Alerts/ErrorAlert';
 
 const LightsContent = () => {
   const { lights, selectedLight, selectedLightName, updateLights, toggleSelectedLight } = useLights();
+  const { errorAlert, toggleErrorAlert } = useAlerts();
 
   useEffect(() => {
     const fetchLights = async () => {
@@ -18,7 +21,7 @@ const LightsContent = () => {
         const data = await apiGet('/lights/list'); // Fetch lights from "/lights/list"
         updateLights(data);
       } catch (error) {
-        console.error('Failed to fetch lights:', error);
+        toggleErrorAlert();
       }
     };
 
@@ -50,6 +53,7 @@ const LightsContent = () => {
         )}
         <AddCard />
       </CardsLayout>
+      {errorAlert && <ErrorAlert />}
     </>
   );
 };
