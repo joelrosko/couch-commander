@@ -45,9 +45,9 @@ const LightsContent = () => {
           <LightCard
             key={lightId}
             name={lightsData.name}
-            manufacturer={lightsData.manufacturername.split(" ")[0]}
-            status={lightsData.state.on}
-            onClick={() => onCardClicked(lightId, lightsData.name, lightsData.state.on)}
+            manufacturer={lightsData.manufacturer}
+            status={lightsData.status}
+            onClick={() => onCardClicked(lightId, lightsData.name, lightsData.status)}
             opacity={selectedLight && selectedLight !== lightId ? 0.7 : 1}
           />
         )}

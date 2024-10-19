@@ -19,9 +19,9 @@ def build_response(data=None, message=None, status=200, error=None, headers=None
     }
 
     response = jsonify(response_body)
-    
+
     response.status_code = status
-    
+
     if headers:
         for key, value in headers.items():
             response.headers[key] = value

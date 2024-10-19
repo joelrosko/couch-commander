@@ -10,16 +10,16 @@ const ActionLayout = () => {
     const onOffClick = async () => {
         try {
             const updatedLights = { ...lights };
-            updatedLights[selectedLight].state.on = !updatedLights[selectedLight].state.on;
+            updatedLights[selectedLight].status = !updatedLights[selectedLight].status;
 
             const body = {
-                "on": updatedLights[selectedLight].state.on
+                "on": updatedLights[selectedLight].status
             };
             await apiPut(`/light/${selectedLight}/on`, body); // Update light state at "/light/<id>/on"
 
             updateLights(updatedLights);
           } catch (error) {
-            console.error('Failed to fetch lights:', error);
+            toggleErrorAlert();
           }
     }
 
@@ -47,9 +47,11 @@ const ActionLayout = () => {
         <Box sx={{ width: '100%', maxWidth: '350px' }}>
             <BrightnessSlider />
         </Box>
+        {lights[selectedLight].multicolor &&
         <Box sx={{ width: '100%', maxWidth: '350px' }}>
             <ColorSlider />
         </Box>
+        }
     </Box>
   )
 }
