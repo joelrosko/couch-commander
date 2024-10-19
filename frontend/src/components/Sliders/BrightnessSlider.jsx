@@ -1,11 +1,24 @@
 import { Box, Slider } from '@mui/material';
-import { useState } from 'react';
+import { useLights } from '../../contexts/LightsContext';
+import { apiPut } from '../../services/apiService';
 
 const BrightnessSlider = () => {
-    const [sliderValue, setSliderValue] = useState(50);
+    const { lights, selectedLight, updateLights } = useLights();
 
-    const handleSliderChange = (event, newValue) => {
-        setSliderValue(newValue);
+    const handleSliderChange = async (e, newValue) => {
+        try {
+            const updatedLights = { ...lights };
+            updatedLights[selectedLight].bri = newValue;
+
+            const body = {
+                "bri": updatedLights[selectedLight].bri
+            };
+            await apiPut(`/light/${selectedLight}/bri`, body); // Update light bri at "/light/<id>/bri"
+
+            updateLights(updatedLights);
+        } catch (error) {
+            toggleErrorAlert();
+          }
       };
 
     const transparentGradient = `linear-gradient(90deg,
@@ -15,10 +28,11 @@ const BrightnessSlider = () => {
   return (
     <Box>
         <Slider
-            value={sliderValue}
+            value={lights[selectedLight].bri}
             onChange={handleSliderChange}
-            min={0}
-            max={100}
+            min={1}
+            max={255}
+            disabled={!lights[selectedLight].status}
             sx={{
                 '& .MuiSlider-thumb': {
                     backgroundColor: '#FFFFFF',
