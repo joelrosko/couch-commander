@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography, Box } from '@mui/material';
+import { Card } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 const AddCard = () => {
