@@ -5,7 +5,7 @@ from src.middlewares.auth import token_required
 from src.services.deconz_service import get_from_deconz, put_to_deconz, post_to_deconz, del_from_deconz
 from src.utils.response_util import build_response
 from src.utils.logging_util import log_errors_to_db
-from src.utils.data_formatter_util import format_groups_data
+from src.utils.data_formatter_util import format_groups_data, format_specific_group_data, format_lights_data
 
 groups = Blueprint("groups", __name__)
 
@@ -52,7 +52,20 @@ async def get_groups():
 async def get_group(group_id):
     try:
         endpoint = f"/groups/{group_id}"
-        response = await get_from_deconz(endpoint=endpoint)
+        group_res = await get_from_deconz(endpoint=endpoint)
+        group_data = format_specific_group_data(group_res)
+
+        lights_res = await get_from_deconz(endpoint="/lights")
+        group_lights = {key: value for key, value in lights_res.items() if key in group_data["lights"]}
+        lights_data = format_lights_data(group_lights)
+
+        group_data["multicolor"] = all(light["multicolor"] for light in lights_data.values())
+
+        response = {
+            "group": group_data,
+            "lights": lights_data
+        }
+
         return build_response(data=response, status=200)
     except ClientResponseError as e:
         log_errors_to_db(
@@ -329,6 +342,83 @@ async def remove_group(group_id):
         endpoint = f'/groups/{group_id}'
 
         response = await del_from_deconz(endpoint)
+
+        return build_response(data=response, status=200)
+    except ClientResponseError as e:
+        log_errors_to_db(
+            endpoint=request.path,
+            error_message=str(e),
+            status_code=e.status
+        )
+
+        return build_response(error=f"Failed at: {e.message}", status=e.status)
+    except ClientError as e:
+        log_errors_to_db(
+            endpoint=request.path,
+            error_message=str(e),
+            status_code=500
+        )
+
+        return build_response(error=f"Client error: {str(e)}", status=500)
+    except Exception as e:
+        log_errors_to_db(
+            endpoint=request.path,
+            error_message=str(e),
+            status_code=500
+        )
+
+        return build_response(error="Server error", status=500)
+
+# Route to update group brightness
+# /api/v1/groups/<int:group_id>/bri
+@groups.route("/<int:group_id>/bri", methods = ["PUT"])
+@token_required
+async def put_group_bri(group_id):
+    try:
+        try:
+            body = request.get_json()
+        except Exception:
+            log_errors_to_db(
+                endpoint=request.path,
+                error_message="No body data included",
+                status_code=400
+            )
+
+            return build_response(error="no body data included", status=400)
+
+        if "bri" not in body:
+            log_errors_to_db(
+                endpoint=request.path,
+                error_message="Missing key: bri",
+                status_code=400
+            )
+
+            return build_response(error="'bri' state must be provided", status=400)
+
+        bri_state = body['bri']
+
+        if not isinstance(bri_state, int):
+            log_errors_to_db(
+                endpoint=request.path,
+                error_message="Bri must be an int",
+                status_code=400
+            )
+
+            return build_response(error="'bri' must be a integer", status=400)
+
+        if bri_state <= 0 or bri_state > 255:
+            log_errors_to_db(
+                endpoint=request.path,
+                error_message="Bri not within 1-255",
+                status_code=400
+            )
+
+            return build_response(error="'bri' must be a integer between 1 - 255", status=400)
+
+        endpoint = f"/groups/{group_id}/action"
+        payload = {"bri": bri_state}
+
+        response = await put_to_deconz(endpoint=endpoint, payload=payload)
 
         return build_response(data=response, status=200)
     except ClientResponseError as e:
