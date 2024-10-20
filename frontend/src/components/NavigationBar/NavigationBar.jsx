@@ -13,10 +13,10 @@ const NavigationBar = () => {
       <BottomNavigation showLabels value={location.pathname}>
         <BottomNavigationAction
           component={Link}
-          to="/lights"
+          to="/"
           label="Lights" // Show text if not a phone
           icon={<LightIcon style={{ width: 28, height: 28 }} />}
-          value="/lights"
+          value="/"
         />
         <Divider sx={{ marginTop: 1, marginBottom: 1 }} orientation="vertical" flexItem /> {/* Divider between buttons */}
         <BottomNavigationAction

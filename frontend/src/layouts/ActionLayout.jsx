@@ -5,25 +5,9 @@ import { apiPut } from '../services/apiService';
 import { useLights } from '../contexts/LightsContext';
 import { useAlerts } from '../contexts/AlertsContext';
 
-const ActionLayout = () => {
+const ActionLayout = ({ multicolor, onOffClick }) => {
     const { lights, selectedLight, updateLights } = useLights();
     const { toggleErrorAlert } = useAlerts();
-
-    const onOffClick = async () => {
-        try {
-            const updatedLights = { ...lights };
-            updatedLights[selectedLight].status = !updatedLights[selectedLight].status;
-
-            const body = {
-                "on": updatedLights[selectedLight].status
-            };
-            await apiPut(`/light/${selectedLight}/on`, body); // Update light state at "/light/<id>/on"
-
-            updateLights(updatedLights);
-          } catch (error) {
-            toggleErrorAlert();
-          }
-    }
 
     const classicModeClick = () => {
         console.log("Classic mode click")
@@ -49,7 +33,7 @@ const ActionLayout = () => {
         <Box sx={{ width: '100%', maxWidth: '350px' }}>
             <BrightnessSlider />
         </Box>
-        {lights[selectedLight].multicolor &&
+        {multicolor &&
         <Box sx={{ width: '100%', maxWidth: '350px' }}>
             <ColorSlider />
         </Box>

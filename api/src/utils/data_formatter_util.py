@@ -29,3 +29,16 @@ def format_groups_data(groups:dict):
         updated_response[group_id] = included_group_data
 
     return updated_response
+
+def format_specific_group_data(group:dict):
+    return {
+        "id": group["id"],
+        "name": group["name"],
+        "allOn": group["state"]['all_on'],
+        "anyOn": group["state"]['any_on'],
+        "bri": group["action"]["bri"],
+        "temprature": group["action"]["ct"],
+        "color": group["action"]["xy"],
+        "sat": group["action"]["sat"],
+        "lights": group["lights"]
+    }

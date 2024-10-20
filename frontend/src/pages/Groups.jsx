@@ -7,10 +7,12 @@ import CardsLayout from '../layouts/CardsLayout';
 import GroupCard from '../components/Cards/GroupCard';
 import AddCard from '../components/Cards/AddCard';
 import ErrorAlert from '../components/Alerts/ErrorAlert';
+import { useNavigate } from 'react-router-dom';
 
 const Groups = () => {
   const [groups, setGroups] = useState({});
   const { errorAlert, toggleErrorAlert } = useAlerts();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -26,8 +28,7 @@ const Groups = () => {
   }, []);
 
   const onCardClicked = (groupId) => {
-    console.log("Group card clicked")
-    console.log(groupId)
+    navigate(`/groups/${groupId}`);
   }
 
   return (

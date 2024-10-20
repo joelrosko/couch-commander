@@ -5,6 +5,7 @@ import Error from './pages/Error.jsx'
 import Lights from './pages/Lights.jsx'
 import Groups from './pages/Groups.jsx'
 import Settings from './pages/Settings.jsx'
+import GroupControls from './pages/GroupControls.jsx'
 import './index.css'
 import {
   createBrowserRouter,
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: "groups",
         element: <Groups />
+      },
+      {
+        path: "groups/:id",
+        element: <GroupControls />
       },
       {
         path: "settings",
