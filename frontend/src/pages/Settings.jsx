@@ -6,8 +6,13 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
 import FormatAlignLeftOutlinedIcon from '@mui/icons-material/FormatAlignLeftOutlined';
 import TextModal from "../components/Modals/TextModal";
+import { useAlerts } from '../contexts/AlertsContext';
+import ErrorAlert from '../components/Alerts/ErrorAlert';
+import { useHouse } from "../contexts/HouseContext";
 
 const Settings = () => {
+  const { errorAlert, toggleErrorAlert } = useAlerts();
+  const { houseName } = useHouse();
 
   const editName = () => {
     console.log("edit name")
@@ -28,7 +33,7 @@ const Settings = () => {
           <List sx={{background: '#ffffff', borderRadius: '7px', boxShadow: 3, paddingBottom: '0px', paddingTop: '0px'}}>
             <ListItem sx={{paddingBottom: '12px', paddingTop: '12px'}}>
               <Typography variant="body1" sx={{flexGrow: 1}}>
-                Name of house: Vasaplatsen
+                {`Name of house: ${houseName}`}
               </Typography>
               <CreateOutlinedIcon onClick={editName} sx={{color: '#d36135', '&:hover': {cursor: 'pointer'}, ml: '8px'}} />
             </ListItem>
@@ -65,6 +70,7 @@ const Settings = () => {
         </Box>
       </Box>
       <TextModal />
+      {errorAlert && <ErrorAlert />}
     </>
   )
 }

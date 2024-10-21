@@ -8,10 +8,12 @@ import GroupCard from '../components/Cards/GroupCard';
 import AddCard from '../components/Cards/AddCard';
 import ErrorAlert from '../components/Alerts/ErrorAlert';
 import { useNavigate } from 'react-router-dom';
+import { useHouse } from '../contexts/HouseContext';
 
 const Groups = () => {
   const [groups, setGroups] = useState({});
   const { errorAlert, toggleErrorAlert } = useAlerts();
+  const { houseName } = useHouse();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,7 +36,7 @@ const Groups = () => {
   return (
     <>
       <HeaderLayout>
-        <HeaderBar name={'VASAPLATSEN'} section={'GROUPS'} />
+        <HeaderBar name={houseName.toUpperCase()} section={'GROUPS'} />
       </HeaderLayout>
       <CardsLayout>
         {Object.entries(groups).map(([groupId, groupData]) =>

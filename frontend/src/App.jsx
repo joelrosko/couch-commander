@@ -5,6 +5,7 @@ import { theme } from './theme/theme'
 import { AlertsProvider } from './contexts/AlertsContext';
 import { LightsProvider } from './contexts/LightsContext';
 import { GroupProvider } from './contexts/GroupContext';
+import { HouseProvider } from './contexts/HouseContext';
 
 function App() {
   return (
@@ -12,7 +13,9 @@ function App() {
       <AlertsProvider>
         <LightsProvider>
           <GroupProvider>
-            <Outlet />
+            <HouseProvider>
+              <Outlet />
+            </HouseProvider>
           </GroupProvider>
         </LightsProvider>
         <NavigationBar />
