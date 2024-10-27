@@ -371,3 +371,38 @@ async def put_light_color(lamp_id):
         )
 
         return build_response(error="Server error", status=500)
+
+# Route to indicate light
+# /api/v1/light/<int:lamp_id>/indicate
+@light.route('/<int:lamp_id>/indicate', methods=['PUT'])
+@token_required
+async def put_indicate_light(lamp_id):
+    try:
+        endpoint = f"/lights/{lamp_id}/state"
+        payload = {"alert": "lselect"}
+        response = await put_to_deconz(endpoint=endpoint, payload=payload)
+        return build_response(data=response, status=200)
+    except ClientResponseError as e:
+        log_errors_to_db(
+            endpoint=request.path,
+            error_message=str(e),
+            status_code=e.status
+        )
+
+        return build_response(error=f"Failed at: {e.message}", status=e.status)
+    except ClientError as e:
+        log_errors_to_db(
+            endpoint=request.path,
+            error_message=str(e),
+            status_code=500
+        )
+
+        return build_response(error=f"Client error: {str(e)}", status=500)
+    except Exception as e:
+        log_errors_to_db(
+            endpoint=request.path,
+            error_message=str(e),
+            status_code=500
+        )
+
+        return build_response(error="Server error", status=500)
