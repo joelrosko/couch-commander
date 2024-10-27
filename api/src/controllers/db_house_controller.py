@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 
-from src.middlewares.auth import token_required
+from src.middlewares.auth import token_required_sync
 from src import db
 from src.models.house import House
 from src.utils.response_util import build_response
@@ -9,11 +9,11 @@ from src.utils.logging_util import log_errors_to_db
 house = Blueprint("house", __name__)
 
 @house.route("/name", methods=["GET"])
-@token_required
+@token_required_sync
 def get_house_name():
     try:
         house_table = House.query.first()
-        data = {"Name": house_table.name}
+        data = {"name": house_table.name}
 
         return build_response(data=data, status=200)
     except Exception as e:
@@ -26,7 +26,7 @@ def get_house_name():
         return build_response(message="Server error", status=500)
 
 @house.route("/name", methods=["PUT"])
-@token_required
+@token_required_sync
 def update_house_name():
     try:
         try:

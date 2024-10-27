@@ -24,29 +24,44 @@ export const theme = createTheme({
         color: '#ffffff',
         fontFamily: 'Albert Sans', // Use the bold font for h1
         fontWeight: 900,
-        fontSize: '36px'
+        fontSize: '36px',
+        '&:hover': {
+          cursor: 'default',  // This changes the cursor on hover
+        }
       },
       h2: {
         color: '#ffffff',
         fontFamily: 'Albert Sans', // Use the bold font for h2
         fontWeight: 900,
-        fontSize: '16px'
+        fontSize: '16px',
+        '&:hover': {
+          cursor: 'default',  // This changes the cursor on hover
+        }
       },
       h3: {
         color: '#d36135',
         fontFamily: 'Albert Sans', // Use the bold font for h2
         fontWeight: 900,
-        fontSize: '16px'
+        fontSize: '16px',
+        '&:hover': {
+          cursor: 'default',  // This changes the cursor on hover
+        }
       },
       body1: {
         fontFamily: 'Albert Sans', // Use the regular weight for body text
         fontWeight: 500,
         fontSize: '16px',
-        color: '#d36135'
+        color: '#d36135',
+        '&:hover': {
+          cursor: 'default',  // This changes the cursor on hover
+        }
       },
       body2: {
         fontFamily: 'Albert Sans', // Use the regular weight for smaller body text
         fontWeight: 500,
+        '&:hover': {
+          cursor: 'default',  // This changes the cursor on hover
+        }
       },
       // Apply custom font styles to other elements as needed
     },

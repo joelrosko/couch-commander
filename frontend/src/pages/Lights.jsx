@@ -11,11 +11,13 @@ import { useAlerts } from '../contexts/AlertsContext';
 import ErrorAlert from '../components/Alerts/ErrorAlert';
 import { apiPut } from '../services/apiService';
 import { useGroup } from '../contexts/GroupContext';
+import { useHouse } from '../contexts/HouseContext';
 
 const Lights = () => {
   const { lights, selectedLight, selectedLightName, updateLights, toggleSelectedLight } = useLights();
   const { errorAlert, toggleErrorAlert } = useAlerts();
   const { setControlGroup } = useGroup();
+  const { houseName } = useHouse();
 
   useEffect(() => {
     const fetchLights = async () => {
@@ -56,7 +58,7 @@ const Lights = () => {
   return (
     <>
       <HeaderLayout>
-        <HeaderBar name={'VASAPLATSEN'} section={lightName} />
+        <HeaderBar name={houseName.toUpperCase()} section={lightName} />
         {selectedLight && <ActionLayout multicolor={lights[selectedLight].multicolor} onOffClick={onOffClick} />}
       </HeaderLayout>
       <CardsLayout>
