@@ -1,14 +1,11 @@
-import { Dialog, DialogContentText, DialogTitle, DialogContent, DialogActions, TextField, Button, Typography } from "@mui/material";
+import { Dialog, DialogContentText, DialogContent, DialogActions, TextField, Button, Typography } from "@mui/material";
 import { useState } from "react"
+import { useHouse } from "../../contexts/HouseContext";
 
-const TextModal = () => {
-    const [showModal, setShowModal] = useState(true);
+const TextModal = ({ showModal, setShowModal }) => {
     const [newName, setNewName] = useState("");
     const [error, setError] = useState("");
-
-    const handleOpen = () => {
-        setShowModal(true);
-    }
+    const { houseName, updateName } = useHouse();
 
     const handleClose = () => {
         setShowModal(false);
@@ -18,7 +15,7 @@ const TextModal = () => {
         setNewName(e.target.value);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!newName.trim()) {
             setError("Name cannot be empty");
@@ -28,14 +25,15 @@ const TextModal = () => {
             return;
         }
 
-        console.log("Submitted Name:", newName);
+        await updateName(newName);
         setShowModal(false);
+        setNewName("");
     }
 
   return (
     <Dialog
     open={showModal}
-    onClose={setShowModal}
+    onClose={handleClose}
     PaperProps={{
         component: 'form',
         onSubmit: handleSubmit
@@ -49,7 +47,7 @@ const TextModal = () => {
                 margin="dense"
                 id="name"
                 name="houseName"
-                placeholder="Vasaplatsen"
+                placeholder={houseName}
                 type="text"
                 fullWidth
                 variant="outlined"

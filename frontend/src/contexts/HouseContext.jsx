@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { apiGet } from "../services/apiService";
+import { apiGet, apiPut } from "../services/apiService";
 import { useAlerts } from '../contexts/AlertsContext';
 
 const HouseContext = createContext();
@@ -13,10 +13,8 @@ export const HouseProvider = ({ children }) => {
     const { toggleErrorAlert } = useAlerts();
 
     useEffect(() => {
-        // Simulating an API call or fetching from localStorage
         const fetchHouseName = async () => {
             try {
-                // Replace with your actual fetch logic (e.g., API call)
                 const data = await apiGet('/house/name');
                 setHouseName(data.name);
             } catch (error) {
@@ -27,8 +25,17 @@ export const HouseProvider = ({ children }) => {
         fetchHouseName();
     }, []);
 
+    const updateName = async (newName) => {
+        try {
+            await apiPut('/house/name', {"name": newName});
+            setHouseName(newName);
+        } catch (error) {
+            toggleErrorAlert();
+        }
+    }
+
     return (
-        <HouseContext.Provider value={{ houseName, setHouseName }}>
+        <HouseContext.Provider value={{ houseName, setHouseName, updateName }}>
             {children}
         </HouseContext.Provider>
     );

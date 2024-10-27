@@ -9,13 +9,15 @@ import TextModal from "../components/Modals/TextModal";
 import { useAlerts } from '../contexts/AlertsContext';
 import ErrorAlert from '../components/Alerts/ErrorAlert';
 import { useHouse } from "../contexts/HouseContext";
+import { useState } from "react";
 
 const Settings = () => {
-  const { errorAlert, toggleErrorAlert } = useAlerts();
+  const { errorAlert } = useAlerts();
   const { houseName } = useHouse();
+  const [showModal, setShowModal] = useState(false);
 
   const editName = () => {
-    console.log("edit name")
+    console.log("click")
   }
 
   return (
@@ -35,7 +37,7 @@ const Settings = () => {
               <Typography variant="body1" sx={{flexGrow: 1}}>
                 {`Name of house: ${houseName}`}
               </Typography>
-              <CreateOutlinedIcon onClick={editName} sx={{color: '#d36135', '&:hover': {cursor: 'pointer'}, ml: '8px'}} />
+              <CreateOutlinedIcon onClick={() => setShowModal(true)} sx={{color: '#d36135', '&:hover': {cursor: 'pointer'}, ml: '8px'}} />
             </ListItem>
             <Divider />
             <ListItem sx={{paddingBottom: '12px', paddingTop: '12px'}}>
@@ -69,7 +71,7 @@ const Settings = () => {
           </List>
         </Box>
       </Box>
-      <TextModal />
+      <TextModal showModal={showModal} setShowModal={setShowModal} />
       {errorAlert && <ErrorAlert />}
     </>
   )
