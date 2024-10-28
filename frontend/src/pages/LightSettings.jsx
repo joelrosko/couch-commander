@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { apiGet, apiPut } from '../services/apiService';
+import { apiGet, apiPut, apiDelete } from '../services/apiService';
 import HeaderLayout from "../layouts/HeaderLayout";
 import HeaderBar from "../components/HeaderBar/HeaderBar";
 import { Box, Divider, List, ListItem, Typography } from "@mui/material"
@@ -10,14 +10,14 @@ import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import WbIncandescentOutlinedIcon from '@mui/icons-material/WbIncandescentOutlined';
 import ItemModal from '../components/Modals/ItemModal';
+import ConfirmModal from '../components/Modals/ConfirmModal';
 
 const LightSettings = () => {
   const { lights, updateLights, getUpdateLights } = useLights()
   const { errorAlert, toggleErrorAlert } = useAlerts();
   const [showModal, setShowModal] = useState(false);
-  const [selectedLight, setSelectedLight] = useState({})
-  var selectedLightId = null;
-  var lightName = null;
+  const [selectedLight, setSelectedLight] = useState({});
+  const [showConfirmModal, setShowConfirmmodalModal] = useState(false);
 
   useEffect(() => {
     const fetchLights = async () => {
@@ -34,19 +34,19 @@ const LightSettings = () => {
 
   const indicateLight = async (lightId) => {
     try {
-        await apiPut(`/light/${lightId}/indicate`, {})
+        await apiPut(`/light/${lightId}/indicate`, {});
     } catch (error){
         toggleErrorAlert();
     }
-  }
+  };
 
   const editLightName = async (lightId, oldName) => {
     setSelectedLight({
         "id": lightId,
         "name": oldName
-    })
+    });
     setShowModal(true);
-  }
+  };
 
   const updateName = async (lightId, newName) => {
     try {
@@ -55,11 +55,24 @@ const LightSettings = () => {
     } catch (error){
         toggleErrorAlert();
     }
-  }
+  };
 
-  const deleteLight = async (lightId) => {
-    console.log(lightId)
-  }
+  const deleteLight = (lightId) => {
+    setSelectedLight({
+      "id": lightId,
+      "name": null
+    });
+    setShowConfirmmodalModal(true);
+  };
+
+  const onRemoveLight = async (lightId) => {
+    try {
+      await apiDelete(`/light/${lightId}/remove`);
+      getUpdateLights();
+    } catch (error){
+      toggleErrorAlert();
+    }
+  };
 
   return (
     <>
@@ -91,6 +104,13 @@ const LightSettings = () => {
             </Box>
         </Box>
         <ItemModal showModal={showModal} setShowModal={setShowModal} oldName={selectedLight.name} itemId={selectedLight.id} onSubmit={updateName} />
+        <ConfirmModal
+        showModal={showConfirmModal}
+        setShowModal={setShowConfirmmodalModal}
+        contentText="If you continue the light will be deleted"
+        itemId={selectedLight.id}
+        onContinue={onRemoveLight}
+        />
         {errorAlert && <ErrorAlert />}
     </>
   );
