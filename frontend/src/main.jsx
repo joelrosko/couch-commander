@@ -6,6 +6,7 @@ import Lights from './pages/Lights.jsx'
 import Groups from './pages/Groups.jsx'
 import Settings from './pages/Settings.jsx'
 import GroupControls from './pages/GroupControls.jsx'
+import LightSettings from './pages/LightSettings.jsx'
 import './index.css'
 import {
   createBrowserRouter,
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "settings",
         element: <Settings />
+      },
+      {
+        path: "settings/lights",
+        element: <LightSettings />
       }
     ]
   }

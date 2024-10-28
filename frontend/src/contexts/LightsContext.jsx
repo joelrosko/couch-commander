@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import { apiGet } from "../services/apiService";
 
 const LightsContext = createContext();
 
@@ -15,6 +16,11 @@ export const LightsProvider = ({ children }) => {
         setLights(newLights);
     };
 
+    const getUpdateLights = async () => {
+        const data = await apiGet('/lights/list'); // Fetch lights from "/lights/list"
+        updateLights(data);
+    }
+
     const toggleSelectedLight = (lightId, lightName) => {
         if (selectedLight === lightId) {
             setSelectedLight(null);
@@ -26,7 +32,7 @@ export const LightsProvider = ({ children }) => {
     };
 
     return (
-        <LightsContext.Provider value={{ lights, selectedLight, selectedLightName, updateLights, toggleSelectedLight }}>
+        <LightsContext.Provider value={{ lights, selectedLight, selectedLightName, updateLights, toggleSelectedLight, getUpdateLights }}>
             {children}
         </LightsContext.Provider>
     );

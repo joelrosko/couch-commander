@@ -10,11 +10,13 @@ import { useAlerts } from '../contexts/AlertsContext';
 import ErrorAlert from '../components/Alerts/ErrorAlert';
 import { useHouse } from "../contexts/HouseContext";
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const Settings = () => {
   const { errorAlert } = useAlerts();
   const { houseName } = useHouse();
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
   const editName = () => {
     console.log("click")
@@ -51,7 +53,7 @@ const Settings = () => {
               <Typography variant="body1" sx={{flexGrow: 1}}>
                 Edit lights
               </Typography>
-              <ArrowForwardIosOutlinedIcon onClick={editName} sx={{color: '#d36135', '&:hover': {cursor: 'pointer'}, ml: '8px'}} />
+              <ArrowForwardIosOutlinedIcon onClick={() => navigate('/settings/lights')} sx={{color: '#d36135', '&:hover': {cursor: 'pointer'}, ml: '8px'}} />
             </ListItem>
             <Divider />
             <ListItem sx={{paddingBottom: '12px', paddingTop: '12px'}}>
