@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 
-from src.middlewares.auth import token_required
+from src.middlewares.auth import token_required_sync
 from src import db
 from src.models.light import Light
 from src.utils.response_util import build_response
@@ -9,7 +9,7 @@ from src.utils.logging_util import log_errors_to_db
 db_lights = Blueprint("db_lights", __name__)
 
 @db_lights.route("/lights", methods=["GET"])
-@token_required
+@token_required_sync
 def get_all():
     try:
         lights = Light.query.all()
@@ -30,7 +30,7 @@ def get_all():
         return build_response(message="Server error", status=500)
 
 @db_lights.route("/lights", methods=["POST"])
-@token_required
+@token_required_sync
 def add_lights():
     try:
         try:
@@ -79,7 +79,7 @@ def add_lights():
         return build_response(error="Server error", status=500)
 
 @db_lights.route("/lights", methods=["DELETE"])
-@token_required
+@token_required_sync
 def delete_light():
     try:
         try:

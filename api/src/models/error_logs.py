@@ -15,6 +15,18 @@ class ErrorLog(db.Model):
         self.endpoint = endpoint
         self.error_message = error_message
         self.status_code = status_code
-    
+
     def __repr__(self):
         return "Logs table"
+
+    @staticmethod
+    def maintain_limit(session, limit=50):
+        count = session.query(ErrorLog).count()
+        if count >= limit:
+            oldest_logs = (session.query(ErrorLog)
+                           .order_by(ErrorLog.timestamp)
+                           .limit(count - limit + 1)
+                           .all())
+            for log in oldest_logs:
+                session.delete(log)
+            session.commit()
