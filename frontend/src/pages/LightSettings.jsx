@@ -11,6 +11,7 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import WbIncandescentOutlinedIcon from '@mui/icons-material/WbIncandescentOutlined';
 import ItemModal from '../components/Modals/ItemModal';
 import ConfirmModal from '../components/Modals/ConfirmModal';
+import BackICon from '../components/BackIcon/BackICon';
 
 const LightSettings = () => {
   const { lights, updateLights, getUpdateLights } = useLights()
@@ -79,6 +80,7 @@ const LightSettings = () => {
         <HeaderLayout>
             <HeaderBar name={'LIGHTS'} section={'SETTINGS'} />
         </HeaderLayout>
+        <BackICon />
         <Box sx={{
         m: '20px',
         display: 'flex',
@@ -94,7 +96,7 @@ const LightSettings = () => {
                                 {lightsData.name}
                             </Typography>
                             <WbIncandescentOutlinedIcon onClick={() => indicateLight(lightId)} sx={{color: '#d36135', '&:hover': {cursor: 'pointer'}, ml: '8px'}} />
-                            <CreateOutlinedIcon onClick={() => editLightName(lightId, "Test")} sx={{color: '#d36135', '&:hover': {cursor: 'pointer'}, ml: '8px'}} />
+                            <CreateOutlinedIcon onClick={() => editLightName(lightId, lightsData.name)} sx={{color: '#d36135', '&:hover': {cursor: 'pointer'}, ml: '8px'}} />
                             <DeleteOutlineOutlinedIcon onClick={() => deleteLight(lightId)} sx={{color: '#d36135', '&:hover': {cursor: 'pointer'}, ml: '8px'}} />
                         </ListItem>
                         {index < array.length - 1 && <Divider />}

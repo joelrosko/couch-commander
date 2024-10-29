@@ -11,12 +11,15 @@ import LightCard from '../components/Cards/LightCard';
 import AddCard from '../components/Cards/AddCard';
 import { useLights } from '../contexts/LightsContext';
 import { useGroup } from '../contexts/GroupContext';
+import { useHouse } from '../contexts/HouseContext';
+import BackICon from '../components/BackIcon/BackICon';
 
 const GroupControls = () => {
   const { id } = useParams();
   const { errorAlert, toggleErrorAlert } = useAlerts();
-  const { lights, selectedLight, selectedLightName, updateLights, toggleSelectedLight } = useLights();
+  const { lights, selectedLight, selectedLightName, updateLights, toggleSelectedLight, setSelectedLight } = useLights();
   const { group, controlGroup, updateGroup, setControlGroup } = useGroup();
+  const { houseName } = useHouse();
 
   useEffect(() => {
     const fetchGroup = async () => {
@@ -29,6 +32,8 @@ const GroupControls = () => {
         }
     };
 
+    setSelectedLight(null);
+    setControlGroup(true);
     fetchGroup();
   }, []);
 
@@ -68,9 +73,10 @@ const GroupControls = () => {
   return (
     <>
       <HeaderLayout>
-        <HeaderBar name={'VASAPLATSEN'} section={group.name} />
+        <HeaderBar name={houseName.toUpperCase()} section={group.name} />
         <ActionLayout multicolor={group.multicolor} onOffClick={onOffClick} />
       </HeaderLayout>
+      <BackICon />
       <CardsLayout>
         {Object.entries(lights).map(([lightId, lightsData]) =>
           <LightCard
