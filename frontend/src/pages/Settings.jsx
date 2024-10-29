@@ -11,15 +11,30 @@ import ErrorAlert from '../components/Alerts/ErrorAlert';
 import { useHouse } from "../contexts/HouseContext";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { apiDelete } from "../services/apiService";
+import ConfirmModal from "../components/Modals/ConfirmModal";
 
 const Settings = () => {
   const { errorAlert } = useAlerts();
   const { houseName } = useHouse();
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+  const [showConfirmModal, setShowConfirmmodalModal] = useState(false);
 
   const editName = () => {
     console.log("click")
+  }
+
+  const onDeleteLogs = () => {
+    setShowConfirmmodalModal(true);
+  }
+
+  const removeLogs = async () => {
+    try {
+      await apiDelete(`/logs/`);
+    } catch (error){
+        toggleErrorAlert();
+    }
   }
 
   return (
@@ -67,13 +82,20 @@ const Settings = () => {
               <Typography variant="body1" sx={{flexGrow: 1}}>
                 Logs
               </Typography>
-              <FormatAlignLeftOutlinedIcon onClick={editName} sx={{color: '#d36135', '&:hover': {cursor: 'pointer'}, ml: '8px'}} />
-              <DeleteOutlineOutlinedIcon onClick={editName} sx={{color: '#d36135', '&:hover': {cursor: 'pointer'}, ml: '8px'}} />
+              <FormatAlignLeftOutlinedIcon onClick={() => navigate('/settings/logs')} sx={{color: '#d36135', '&:hover': {cursor: 'pointer'}, ml: '8px'}} />
+              <DeleteOutlineOutlinedIcon onClick={onDeleteLogs} sx={{color: '#d36135', '&:hover': {cursor: 'pointer'}, ml: '8px'}} />
             </ListItem>
           </List>
         </Box>
       </Box>
       <TextModal showModal={showModal} setShowModal={setShowModal} />
+      <ConfirmModal
+        showModal={showConfirmModal}
+        setShowModal={setShowConfirmmodalModal}
+        contentText="If you continue all logs will be deleted"
+        itemId=""
+        onContinue={removeLogs}
+        />
       {errorAlert && <ErrorAlert />}
     </>
   )
