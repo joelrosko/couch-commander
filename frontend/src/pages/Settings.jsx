@@ -60,7 +60,7 @@ const Settings = () => {
               <Typography variant="body1" sx={{flexGrow: 1}}>
                 Edit groups
               </Typography>
-              <ArrowForwardIosOutlinedIcon onClick={editName} sx={{color: '#d36135', '&:hover': {cursor: 'pointer'}, ml: '8px'}} />
+              <ArrowForwardIosOutlinedIcon onClick={() => navigate('/settings/groups')} sx={{color: '#d36135', '&:hover': {cursor: 'pointer'}, ml: '8px'}} />
             </ListItem>
             <Divider />
             <ListItem sx={{paddingBottom: '12px', paddingTop: '12px'}}>

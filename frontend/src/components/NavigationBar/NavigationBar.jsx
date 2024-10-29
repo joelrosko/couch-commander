@@ -8,9 +8,17 @@ const NavigationBar = () => {
 
   const location = useLocation(); // To track current route
 
+  const getBasePath = () => {
+    if (location.pathname.startsWith('/settings')) return '/settings';
+    if (location.pathname.startsWith('/groups')) return '/groups';
+    return '/'; // default to home path if no match
+  };
+
+  const activePath = getBasePath();
+
   return (
     <Box sx={{ width: '100%', position: 'fixed', bottom: 0 }} elevation={3}>
-      <BottomNavigation showLabels value={location.pathname}>
+      <BottomNavigation showLabels value={activePath}>
         <BottomNavigationAction
           component={Link}
           to="/"

@@ -14,7 +14,7 @@ import { useGroup } from '../contexts/GroupContext';
 import { useHouse } from '../contexts/HouseContext';
 
 const Lights = () => {
-  const { lights, selectedLight, selectedLightName, updateLights, toggleSelectedLight } = useLights();
+  const { lights, selectedLight, selectedLightName, updateLights, toggleSelectedLight, setSelectedLight } = useLights();
   const { errorAlert, toggleErrorAlert } = useAlerts();
   const { setControlGroup } = useGroup();
   const { houseName } = useHouse();
@@ -28,7 +28,9 @@ const Lights = () => {
         toggleErrorAlert();
       }
     };
+
     setControlGroup(false);
+    setSelectedLight(null);
     fetchLights();
   }, []);
 

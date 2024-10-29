@@ -32,7 +32,7 @@ export const LightsProvider = ({ children }) => {
     };
 
     return (
-        <LightsContext.Provider value={{ lights, selectedLight, selectedLightName, updateLights, toggleSelectedLight, getUpdateLights }}>
+        <LightsContext.Provider value={{ lights, selectedLight, selectedLightName, updateLights, toggleSelectedLight, getUpdateLights, setSelectedLight }}>
             {children}
         </LightsContext.Provider>
     );
