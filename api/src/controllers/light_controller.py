@@ -406,3 +406,82 @@ async def put_indicate_light(lamp_id):
         )
 
         return build_response(error="Server error", status=500)
+
+# Route to set hue color
+# /api/v1/light/<int:lamp_id>/hue
+@light.route('/<int:lamp_id>/hue', methods=['PUT'])
+@token_required
+async def put_hue_light(lamp_id):
+    try:
+        try:
+            body = request.get_json()
+        except Exception:
+            log_errors_to_db(
+                endpoint=request.path,
+                error_message="No body data included",
+                status_code=400
+            )
+
+            return build_response(error="no body data included", status=400)
+
+        if "hue" not in body:
+            log_errors_to_db(
+                endpoint=request.path,
+                error_message="Missing key: hue",
+                status_code=400
+            )
+
+            return build_response(error="'hue' values must be provided", status=400)
+
+        hue = body["hue"]
+
+        if isinstance(hue, float):
+            log_errors_to_db(
+                endpoint=request.path,
+                error_message="hue value not an int",
+                status_code=400
+            )
+
+            return build_response(error="hue value not an int", status=400)
+
+        hue = (hue / 360) * 65535
+
+        if hue < 0 or hue > 65535:
+            log_errors_to_db(
+                endpoint=request.path,
+                error_message="hue value either too small or too great",
+                status_code=400
+            )
+
+            return build_response(error="hue value either too small or too great", status=400)
+
+        endpoint = f"/lights/{lamp_id}/state"
+        payload = {"sat": 130,
+                   "hue": int(hue)}
+        response = await put_to_deconz(endpoint=endpoint, payload=payload)
+
+        return build_response(data=response, status=200)
+    except ClientResponseError as e:
+        log_errors_to_db(
+            endpoint=request.path,
+            error_message=str(e),
+            status_code=e.status
+        )
+
+        return build_response(error=f"Failed at: {e.message}", status=e.status)
+    except ClientError as e:
+        log_errors_to_db(
+            endpoint=request.path,
+            error_message=str(e),
+            status_code=500
+        )
+
+        return build_response(error=f"Client error: {str(e)}", status=500)
+    except Exception as e:
+        log_errors_to_db(
+            endpoint=request.path,
+            error_message=str(e),
+            status_code=500
+        )
+
+        return build_response(error="Server error", status=500)
