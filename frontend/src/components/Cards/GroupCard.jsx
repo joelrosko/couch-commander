@@ -28,9 +28,16 @@ const GroupCard = ({ name, allOn, onClick, nDevices}) => {
         paddingBottom: '6px',
       }}
     >
-      <Typography variant="h3">
+      <Typography
+      variant="h3"
+      sx={{
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        maxWidth: '100%',
+      }}>
           {name.toUpperCase()}
-        </Typography>
+      </Typography>
       <CardContent
         sx={{
           display: 'flex',

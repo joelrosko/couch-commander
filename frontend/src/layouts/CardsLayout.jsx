@@ -4,21 +4,25 @@ const CardsLayout = ({  children }) => {
   return (
     <Box sx={{
         m: '20px',
-        maxWidth: '1200px',
         display: 'flex',
         justifyContent: 'center',
-        marginBottom: '60px'
+        marginBottom: '60px',
+
     }}>
-        <Box sx={{
-          paddingBottom: '6px',
+        <Box sx={{ maxWidth: '1200px', width: '100%' }}>
+          <Box sx={{
+            paddingBottom: '6px',
             display: 'flex',
             flexDirection: 'row',
             flexWrap: 'wrap',
+            justifyContent: 'center',
             gap: '10px',
             boxSizing: 'border-box',
-            overflowY: 'auto'
-        }}>
-            {children}
+            overflowY: 'auto',
+            width: '100%'
+          }}>
+              {children}
+          </Box>
         </Box>
     </Box>
   )
