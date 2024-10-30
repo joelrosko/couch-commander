@@ -26,7 +26,6 @@ const NavigationBar = () => {
           icon={<LightIcon style={{ width: 28, height: 28 }} />}
           value="/"
         />
-        <Divider sx={{ marginTop: 1, marginBottom: 1 }} orientation="vertical" flexItem /> {/* Divider between buttons */}
         <BottomNavigationAction
           component={Link}
           to="/groups"
@@ -34,7 +33,6 @@ const NavigationBar = () => {
           icon={<GroupIcon style={{ width: 28, height: 28 }} />}
           value="/groups"
         />
-        <Divider sx={{ marginTop: 1, marginBottom: 1 }} orientation="vertical" flexItem /> {/* Divider between buttons */}
         <BottomNavigationAction
           component={Link}
           to="/settings"

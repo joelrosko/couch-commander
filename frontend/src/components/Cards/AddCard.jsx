@@ -1,11 +1,10 @@
 import { Card } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
-const AddCard = () => {
+const AddCard = ({ handleClick }) => {
 
-  const onClick = (e) => {
-    console.log(e)
-    console.log("Add card clicked")
+  const onClick = () => {
+    handleClick();
   }
 
   return (

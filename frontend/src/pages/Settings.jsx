@@ -5,6 +5,7 @@ import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
 import FormatAlignLeftOutlinedIcon from '@mui/icons-material/FormatAlignLeftOutlined';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import TextModal from "../components/Modals/TextModal";
 import { useAlerts } from '../contexts/AlertsContext';
 import ErrorAlert from '../components/Alerts/ErrorAlert';
@@ -80,10 +81,27 @@ const Settings = () => {
             <Divider />
             <ListItem sx={{paddingBottom: '12px', paddingTop: '12px'}}>
               <Typography variant="body1" sx={{flexGrow: 1}}>
+                Edit devices
+              </Typography>
+              <ArrowForwardIosOutlinedIcon onClick={() => console.log("disabled")} sx={{color: '#d36135', '&:hover': {cursor: 'pointer'}, ml: '8px'}} />
+            </ListItem>
+            <Divider />
+            <ListItem sx={{paddingBottom: '12px', paddingTop: '12px'}}>
+              <Typography variant="body1" sx={{flexGrow: 1}}>
                 Logs
               </Typography>
               <FormatAlignLeftOutlinedIcon onClick={() => navigate('/settings/logs')} sx={{color: '#d36135', '&:hover': {cursor: 'pointer'}, ml: '8px'}} />
               <DeleteOutlineOutlinedIcon onClick={onDeleteLogs} sx={{color: '#d36135', '&:hover': {cursor: 'pointer'}, ml: '8px'}} />
+            </ListItem>
+            <Divider />
+            <ListItem sx={{paddingBottom: '12px', paddingTop: '12px'}}>
+              <Typography variant="body1" sx={{flexGrow: 1}}>
+                View project
+              </Typography>
+              <GitHubIcon
+              onClick={() => window.open('https://github.com/joelrosko/couch-commander', '_blank', 'noopener,noreferrer')}
+              sx={{color: '#d36135', '&:hover': {cursor: 'pointer'}, ml: '8px'}}
+              />
             </ListItem>
           </List>
         </Box>

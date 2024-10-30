@@ -30,9 +30,16 @@ const LightCard = ({ name, manufacturer, status, onClick, opacity }) => {
         transition: 'opacity 0.3s ease'
       }}
     >
-      <Typography variant="h3">
+      <Typography
+      variant="h3"
+      sx={{
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        maxWidth: '100%',
+      }}>
           {name.toUpperCase()}
-        </Typography>
+      </Typography>
       <CardContent
         sx={{
           display: 'flex',
