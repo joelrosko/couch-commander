@@ -13,20 +13,21 @@ import { useLights } from '../contexts/LightsContext';
 import { useGroup } from '../contexts/GroupContext';
 import { useHouse } from '../contexts/HouseContext';
 import BackICon from '../components/BackIcon/BackICon';
+import { useNavigate } from 'react-router-dom';
 
 const GroupControls = () => {
   const { id } = useParams();
   const { errorAlert, toggleErrorAlert } = useAlerts();
-  const { lights, selectedLight, selectedLightName, updateLights, toggleSelectedLight, setSelectedLight } = useLights();
+  const { lights, selectedLight, updateLights, toggleSelectedLight, setSelectedLight } = useLights();
   const { group, controlGroup, updateGroup, setControlGroup } = useGroup();
   const { houseName } = useHouse();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchGroup = async () => {
         try {
             const res = await apiGet(`/groups/${id}`);
             updateGroup(res.group);
-            updateLights(res.lights);
         } catch (error) {
             toggleErrorAlert();
         }
@@ -65,7 +66,6 @@ const GroupControls = () => {
             updateLights(updatedLights);
         }
     } catch (error) {
-        console.log(error)
         toggleErrorAlert();
     }
   };
@@ -74,21 +74,26 @@ const GroupControls = () => {
     <>
       <HeaderLayout>
         <HeaderBar name={houseName.toUpperCase()} section={group.name} />
-        <ActionLayout multicolor={group.multicolor} onOffClick={onOffClick} />
+        {Object.keys(lights).length > 0 && <ActionLayout multicolor={group.multicolor} onOffClick={onOffClick} />}
       </HeaderLayout>
       <BackICon />
       <CardsLayout>
-        {Object.entries(lights).map(([lightId, lightsData]) =>
-          <LightCard
-            key={lightId}
-            name={lightsData.name}
-            manufacturer={lightsData.manufacturer}
-            status={lightsData.status}
-            onClick={() => onCardClicked(lightId, lightsData.name)}
-            opacity={selectedLight && selectedLight !== lightId ? 0.7 : 1}
-          />
-        )}
-        <AddCard />
+        {group.lights && group.lights.map((lightId) => {
+            const lightData = lights[lightId];
+            if (!lightData) return null; // Skip if light data not found for this ID
+
+            return (
+              <LightCard
+                key={lightId}
+                name={lightData.name}
+                manufacturer={lightData.manufacturer}
+                status={lightData.status}
+                onClick={() => onCardClicked(lightId, lightData.name)}
+                opacity={selectedLight && selectedLight !== lightId ? 0.7 : 1}
+              />
+            );
+          })}
+          <AddCard handleClick={() => navigate(`/groups/${id}/add`)} />
       </CardsLayout>
       {errorAlert && <ErrorAlert />}
     </>

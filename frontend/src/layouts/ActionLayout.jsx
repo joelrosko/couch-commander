@@ -1,14 +1,8 @@
 import { Button, Box } from '@mui/material';
 import ColorSlider from '../components/Sliders/ColorSlider';
 import BrightnessSlider from '../components/Sliders/BrightnessSlider';
-import { apiPut } from '../services/apiService';
-import { useLights } from '../contexts/LightsContext';
-import { useAlerts } from '../contexts/AlertsContext';
 
 const ActionLayout = ({ multicolor, onOffClick }) => {
-    const { lights, selectedLight, updateLights } = useLights();
-    const { toggleErrorAlert } = useAlerts();
-
     const classicModeClick = () => {
         console.log("Classic mode click")
     }

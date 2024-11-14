@@ -9,6 +9,7 @@ import GroupControls from './pages/GroupControls.jsx'
 import LightSettings from './pages/LightSettings.jsx'
 import GroupSettings from './pages/GroupSettings.jsx'
 import LogSettings from './pages/LogSettings.jsx'
+import AddGroupLights from './pages/AddGroupLights.jsx'
 import './index.css'
 import {
   createBrowserRouter,
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "groups/:id",
         element: <GroupControls />
+      },
+      {
+        path: "groups/:id/add",
+        element: <AddGroupLights />
       },
       {
         path: "settings",
