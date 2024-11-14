@@ -62,8 +62,7 @@ async def get_group(group_id):
         group_data["multicolor"] = all(light["multicolor"] for light in lights_data.values())
 
         response = {
-            "group": group_data,
-            "lights": lights_data
+            "group": group_data
         }
 
         return build_response(data=response, status=200)
