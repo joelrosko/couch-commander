@@ -11,11 +11,13 @@ certifi==2024.8.30
 charset-normalizer==3.3.2
 click==8.1.7
 Flask==3.0.3
+Flask-Cors==5.0.0
 Flask-Migrate==4.0.7
 Flask-RESTful==0.3.10
 Flask-SQLAlchemy==3.1.1
 frozenlist==1.4.1
 greenlet==3.1.1
+h11==0.14.0
 idna==3.10
 importlib_metadata==8.5.0
 itsdangerous==2.2.0

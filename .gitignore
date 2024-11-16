@@ -28,3 +28,6 @@ instance/
 */*.njsproj
 */*.sln
 */ *.sw?
+
+# pyenv
+**/__pycache__
