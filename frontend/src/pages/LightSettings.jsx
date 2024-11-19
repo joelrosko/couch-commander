@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { apiGet, apiPut, apiDelete } from '../services/apiService';
+import { useState } from 'react';
+import { apiPut, apiDelete } from '../services/apiService';
 import HeaderLayout from "../layouts/HeaderLayout";
 import HeaderBar from "../components/HeaderBar/HeaderBar";
 import { Box, Divider, List, ListItem, Typography } from "@mui/material"
@@ -14,24 +14,11 @@ import ConfirmModal from '../components/Modals/ConfirmModal';
 import BackICon from '../components/BackIcon/BackICon';
 
 const LightSettings = () => {
-  const { lights, updateLights, getUpdateLights } = useLights()
+  const { lights, getUpdateLights, updateSpecificLight } = useLights()
   const { errorAlert, toggleErrorAlert } = useAlerts();
   const [showModal, setShowModal] = useState(false);
   const [selectedLight, setSelectedLight] = useState({});
   const [showConfirmModal, setShowConfirmmodalModal] = useState(false);
-
-  useEffect(() => {
-    const fetchLights = async () => {
-      try {
-        const data = await apiGet('/lights/list'); // Fetch lights from "/lights/list"
-        updateLights(data);
-      } catch (error) {
-        toggleErrorAlert();
-      }
-    };
-
-    fetchLights();
-  }, []);
 
   const indicateLight = async (lightId) => {
     try {
@@ -52,7 +39,7 @@ const LightSettings = () => {
   const updateName = async (lightId, newName) => {
     try {
         await apiPut(`/light/${lightId}/name`, {"name": newName});
-        getUpdateLights();
+        updateSpecificLight(lightId);
     } catch (error){
         toggleErrorAlert();
     }

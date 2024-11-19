@@ -15,16 +15,17 @@ import ErrorAlert from '../components/Alerts/ErrorAlert';
 const AddGroupLights = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { group, controlGroup, updateGroup, setControlGroup } = useGroup();
-    const { lights, selectedLight, selectedLightName, updateLights, toggleSelectedLight, setSelectedLight } = useLights();
-    const [selectedLights, setSelectedLights] = useState(group.lights);
+    const { group, updateGroup, getSpecificGroup } = useGroup();
+    const { lights } = useLights();
+    const [selectedLights, setSelectedLights] = useState(group.lights || []);
     const { errorAlert, toggleErrorAlert } = useAlerts();
 
     useEffect(() => {
         const fetchGroup = async () => {
             try {
-                const res = await apiGet(`/groups/${id}`);  // Fetch group from "/groups/<id>"
-                updateGroup(res.group);
+                const data = await apiGet(`/groups/${id}`);
+                updateGroup(data)
+                setSelectedLights(data.lights);
             } catch (error) {
                 toggleErrorAlert();
             }
@@ -38,9 +39,8 @@ const AddGroupLights = () => {
 
     const onUpdate = async () => {
         try {
-            await apiPut(`/groups/${id}/add`, { lights: selectedLights });
-            const res = await apiGet(`/groups/${id}`);
-            updateGroup(res.group);
+            await apiPut(`/groups/${id}/add`, { "lights": selectedLights });
+            getSpecificGroup(id);
             navigate(-1);
         } catch (error) {
             toggleErrorAlert();

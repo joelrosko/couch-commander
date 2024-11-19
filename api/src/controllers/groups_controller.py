@@ -61,9 +61,7 @@ async def get_group(group_id):
 
         group_data["multicolor"] = all(light["multicolor"] for light in lights_data.values())
 
-        response = {
-            "group": group_data
-        }
+        response = group_data
 
         return build_response(data=response, status=200)
     except ClientResponseError as e:
@@ -497,6 +495,66 @@ async def put_hue_light(group_id):
         payload = {"sat": 130,
                    "hue": int(hue)}
         response = await put_to_deconz(endpoint=endpoint, payload=payload)
+
+        return build_response(data=response, status=200)
+    except ClientResponseError as e:
+        log_errors_to_db(
+            endpoint=request.path,
+            error_message=str(e),
+            status_code=e.status
+        )
+
+        return build_response(error=f"Failed at: {e.message}", status=e.status)
+    except ClientError as e:
+        log_errors_to_db(
+            endpoint=request.path,
+            error_message=str(e),
+            status_code=500
+        )
+
+        return build_response(error=f"Client error: {str(e)}", status=500)
+    except Exception as e:
+        log_errors_to_db(
+            endpoint=request.path,
+            error_message=str(e),
+            status_code=500
+        )
+
+        return build_response(error="Server error", status=500)
+
+# Route to get group lights
+# /api/v1/groups/lights
+@groups.route("/lights", methods = ["PUT"])
+@token_required
+async def get_group_lights():
+    try:
+        try:
+            body = request.get_json()
+        except Exception:
+            log_errors_to_db(
+                endpoint=request.path,
+                error_message="No body data included",
+                status_code=400
+            )
+
+            return build_response(error="no body data included", status=400)
+
+        if "lights" not in body:
+            log_errors_to_db(
+                endpoint=request.path,
+                error_message="Missing key: lights",
+                status_code=400
+            )
+
+            return build_response(error="array of lights must be included", status=400)
+
+        lights = body['lights']
+
+        endpoint = "/lights"
+        init_response = await get_from_deconz(endpoint=endpoint)
+        init_response = format_lights_data(init_response)
+
+        response = {key: value for key, value in init_response.items() if key in lights}
 
         return build_response(data=response, status=200)
     except ClientResponseError as e:
