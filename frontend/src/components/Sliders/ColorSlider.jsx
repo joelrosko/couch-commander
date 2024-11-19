@@ -5,7 +5,7 @@ import { useAlerts } from '../../contexts/AlertsContext';
 import { useGroup } from '../../contexts/GroupContext';
 
 const ColorSlider = () => {
-    const { lights, selectedLight, updateLights } = useLights();
+    const { lights, selectedLight, updateSpecificLight } = useLights();
     const { toggleErrorAlert } = useAlerts();
     const { group, controlGroup, updateGroup } = useGroup();
 
@@ -14,25 +14,19 @@ const ColorSlider = () => {
     const handleSliderChange = async (e, newValue) => {
         try {
             if (isLightSelected) {
-                const updatedLights = { ...lights };
-                updatedLights[selectedLight].color = newValue;
-
                 const body = {
-                    "hue": updatedLights[selectedLight].color
+                    "hue": newValue
                 };
                 await apiPut(`/light/${selectedLight}/hue`, body); // Update light color at "/light/<id>/hue"
 
-                updateLights(updatedLights);
+                updateSpecificLight();
             } else {
-                const updatedGroup = { ...group };
-                updatedGroup.color = newValue;
-
                 const body = {
-                    "hue": updatedGroup.color
+                    "hue": newValue
                 };
                 await apiPut(`/groups/${group.id}/hue`, body);
 
-                updateGroup(updatedGroup);
+                getSpecificGroup(group.id);
             }
         } catch (error) {
             toggleErrorAlert();

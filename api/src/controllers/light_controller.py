@@ -5,6 +5,7 @@ from src.middlewares.auth import token_required
 from src.services.deconz_service import get_from_deconz, put_to_deconz, del_from_deconz
 from src.utils.response_util import build_response
 from src.utils.logging_util import log_errors_to_db
+from src.utils.data_formatter_util import format_light_data
 
 light = Blueprint("light", __name__)
 
@@ -16,6 +17,8 @@ async def get_light_state(lamp_id):
     try:
         endpoint = f"/lights/{lamp_id}"
         response = await get_from_deconz(endpoint=endpoint)
+        response = format_light_data(response)
+
         return build_response(data=response, status=200)
     except ClientResponseError as e:
         log_errors_to_db(

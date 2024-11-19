@@ -5,43 +5,33 @@ import { useAlerts } from '../../contexts/AlertsContext';
 import { useGroup } from '../../contexts/GroupContext';
 
 const BrightnessSlider = () => {
-    const { lights, selectedLight, updateLights } = useLights();
+    const { lights, selectedLight, updateSpecificLight } = useLights();
     const { toggleErrorAlert } = useAlerts();
-    const { group, controlGroup, updateGroup } = useGroup();
+    const { group, controlGroup, getSpecificGroup } = useGroup();
 
     const isLightSelected = selectedLight !== null;
 
     const handleSliderChange = async (e, newValue) => {
         try {
             if (isLightSelected) {
-                const updatedLights = { ...lights };
-                updatedLights[selectedLight].bri = newValue;
-
                 const body = {
-                    "bri": updatedLights[selectedLight].bri
+                    "bri": newValue
                 };
                 await apiPut(`/light/${selectedLight}/bri`, body); // Update light bri at "/light/<id>/bri"
 
-                updateLights(updatedLights);
+                updateSpecificLight();
             } else {
-                const updatedGroup = { ...group };
-                updatedGroup.bri = newValue;
-
                 const body = {
-                    "bri": updatedGroup.bri
+                    "bri": newValue
                 };
                 await apiPut(`/groups/${group.id}/bri`, body);
 
-                updateGroup(updatedGroup);
+                getSpecificGroup(group.id);
             }
         } catch (error) {
             toggleErrorAlert();
           }
       };
-
-    const brightnessValue = isLightSelected
-        ? lights[selectedLight]?.bri
-        : group.bri;
 
   const isDisabled = isLightSelected
         ? !lights[selectedLight]?.status

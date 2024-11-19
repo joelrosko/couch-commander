@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { apiGet } from "../services/apiService";
 
 const LightsContext = createContext();
@@ -12,14 +12,27 @@ export const LightsProvider = ({ children }) => {
     const [selectedLight, setSelectedLight] = useState(null);
     const [selectedLightName, setSelectedLightName] = useState(null);
 
+    useEffect(() => {
+        getUpdateLights();
+    }, []);
+
     const updateLights = (newLights) => {
         setLights(newLights);
+    };
+
+    const copyUpdateLights = (newLights) => {
+        setLights({...lights, ...newLights});
     };
 
     const getUpdateLights = async () => {
         const data = await apiGet('/lights/list'); // Fetch lights from "/lights/list"
         updateLights(data);
-    }
+    };
+
+    const updateSpecificLight = async (lightId) => {
+        const data = await apiGet(`/light/${lightId}`); // Get update of specific light at "/light/<id>"
+        copyUpdateLights(data)
+    };
 
     const toggleSelectedLight = (lightId, lightName) => {
         if (selectedLight === lightId) {
@@ -32,7 +45,7 @@ export const LightsProvider = ({ children }) => {
     };
 
     return (
-        <LightsContext.Provider value={{ lights, selectedLight, selectedLightName, updateLights, toggleSelectedLight, getUpdateLights, setSelectedLight }}>
+        <LightsContext.Provider value={{ lights, selectedLight, selectedLightName, updateLights, toggleSelectedLight, getUpdateLights, setSelectedLight, updateSpecificLight, copyUpdateLights }}>
             {children}
         </LightsContext.Provider>
     );

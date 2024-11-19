@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import { apiGet, apiPut } from "../services/apiService"
+import { apiPut } from "../services/apiService"
 import { useAlerts } from '../contexts/AlertsContext';
 import ErrorAlert from '../components/Alerts/ErrorAlert';
 import HeaderLayout from '../layouts/HeaderLayout';
@@ -18,16 +18,15 @@ import { useNavigate } from 'react-router-dom';
 const GroupControls = () => {
   const { id } = useParams();
   const { errorAlert, toggleErrorAlert } = useAlerts();
-  const { lights, selectedLight, updateLights, toggleSelectedLight, setSelectedLight } = useLights();
-  const { group, controlGroup, updateGroup, setControlGroup } = useGroup();
+  const { lights, selectedLight, toggleSelectedLight, setSelectedLight, copyUpdateLights, updateSpecificLight } = useLights();
+  const { group, controlGroup, setControlGroup, getSpecificGroup } = useGroup();
   const { houseName } = useHouse();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchGroup = async () => {
         try {
-            const res = await apiGet(`/groups/${id}`);
-            updateGroup(res.group);
+          await getSpecificGroup(id)
         } catch (error) {
             toggleErrorAlert();
         }
@@ -52,18 +51,20 @@ const GroupControls = () => {
         if (controlGroup) {
             await apiPut(`/groups/${id}/on`, {});   // Toggle light state at "/groups/<id>/on"
 
-            const res = await apiGet(`/groups/${id}`);  // Update light state at "/groups/<id>"
-            updateLights(res.lights);
-        } else {
-            const updatedLights = { ...lights };
-            updatedLights[selectedLight].status = !updatedLights[selectedLight].status;
-
             const body = {
-                "on": updatedLights[selectedLight].status
+              "lights": group.lights,
+            };
+            const res = await apiPut("/groups/lights", body);
+
+            copyUpdateLights(res);
+        } else {
+            newStatus = !lights[selectedLight].status;
+            const body = {
+                "on": newStatus
             };
             await apiPut(`/light/${selectedLight}/on`, body); // Update light state at "/light/<id>/on"
 
-            updateLights(updatedLights);
+            updateSpecificLight(selectedLight);
         }
     } catch (error) {
         toggleErrorAlert();
@@ -74,7 +75,7 @@ const GroupControls = () => {
     <>
       <HeaderLayout>
         <HeaderBar name={houseName.toUpperCase()} section={group.name} />
-        {Object.keys(lights).length > 0 && <ActionLayout multicolor={group.multicolor} onOffClick={onOffClick} />}
+        {group.lights && group.lights.length > 0 && <ActionLayout multicolor={group.multicolor} onOffClick={onOffClick} />}
       </HeaderLayout>
       <BackICon />
       <CardsLayout>
