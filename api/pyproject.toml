@@ -1,0 +1,42 @@
+[project]
+name = "couch-commander-api"
+version = "0.1.0"
+description = "Couch Commander API"
+requires-python = ">=3.12"
+dependencies = [
+    "aiohappyeyeballs",
+    "aiohttp",
+    "aiosignal",
+    "alembic",
+    "aniso8601",
+    "asgiref",
+    "async-timeout",
+    "attrs",
+    "blinker",
+    "certifi",
+    "charset-normalizer",
+    "click",
+    "flask",
+    "flask-cors",
+    "flask-migrate",
+    "flask-restful",
+    "flask-sqlalchemy",
+    "frozenlist",
+    "greenlet",
+    "h11",
+    "idna",
+    "importlib-metadata",
+    "itsdangerous",
+    "jinja2",
+    "mako",
+    "markupsafe",
+    "multidict",
+    "python-dotenv",
+    "pytz",
+    "six",
+    "sqlalchemy",
+    "typing-extensions",
+    "werkzeug",
+    "yarl",
+    "zipp",
+]

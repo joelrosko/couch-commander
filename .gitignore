@@ -29,5 +29,5 @@ instance/
 */*.sln
 */ *.sw?
 
-# pyenv
+uv.lock
 **/__pycache__
