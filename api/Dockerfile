@@ -19,3 +19,5 @@ COPY . .
 
 RUN useradd --create-home --shell /bin/bash appuser && chown -R appuser:appuser /app
 USER appuser
+
+CMD ["uv", "run", "python", "server.py"]

@@ -29,5 +29,4 @@ instance/
 */*.sln
 */ *.sw?
 
-uv.lock
 **/__pycache__
