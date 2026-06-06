@@ -1,6 +1,4 @@
 from flask import Blueprint, request
-from datetime import datetime
-
 from src.middlewares.auth import token_required_sync
 from src import db
 from src.models.error_logs import ErrorLog
