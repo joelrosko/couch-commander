@@ -1,2 +1,2 @@
-from .house import House
-from .light import Light
+from .house import House as House
+from .light import Light as Light

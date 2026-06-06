@@ -126,7 +126,7 @@ async def create_group():
 
             return build_response(error="'name' must be between 1 - 32 chars", status=400)
 
-        endpoint = f'/groups'
+        endpoint = "/groups"
         payload = {"name": group_name}
 
         response = await post_to_deconz(endpoint, payload)

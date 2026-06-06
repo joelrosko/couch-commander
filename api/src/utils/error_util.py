@@ -1,4 +1,4 @@
-from flask import current_app, request
+from flask import request
 
 from src.utils.response_util import build_response
 from src.utils.logging_util import log_errors_to_db

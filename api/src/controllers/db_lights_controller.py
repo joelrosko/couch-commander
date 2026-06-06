@@ -118,7 +118,7 @@ def delete_light():
         db.session.delete(light)
         db.session.commit()
 
-        return build_response(data=f"Light was deleted", status=200)
+        return build_response(data="Light was deleted", status=200)
     except Exception as e:
         log_errors_to_db(
             endpoint=request.path,
